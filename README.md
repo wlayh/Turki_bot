@@ -125,7 +125,7 @@ npm start
 
 ### **`ᥫ᭡ Propietario`**
 <a
-href="https://github.com/Fer280809"><img src="https://github.com/Fer280809.png" width="130" height="130" alt="
+href="https://github.com/Fer280809"><img src="https://github.com/Fer280809.png" width="330" height="330" alt="
 𝕱𝖊𝖗𝖓𝖆𝖓𝖉𝖔"/></a>
 
 ### **`🜸 Créditos`**
