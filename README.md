@@ -102,6 +102,8 @@ npm start
 
 </details>
 
+EL BOT SE ACTUALIZA CADA SEMANA O MES Y SELE ASE MANTENIMIENTO EN ESTE REPOSITORIO
+
 ---
 ### **`➮ Enlaces útiles`**
 
