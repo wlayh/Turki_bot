@@ -97,7 +97,7 @@ npm start
 > Si después de instalar el bot en Termux y iniciar la session del bot (deseas poner tu número es la lista de owner pon este comando:
 
    ```bash
-    cd Yuki_Suou-Bot && nano settings.js
+    cd Asta_bot && nano settings.js
    ```
 
 </details>
@@ -108,16 +108,16 @@ npm start
 <details>
  <summary><b> 🜸 Enlaces Oficiales </b></summary>
 
- * Canal Oficial  [`¡Click aquí!`](https://whatsapp.com/channel/0029VbAfPu9BqbrEMFWXKE0d)
-* Grupo Oficial [`¡Click aquí!`](https://chat.whatsapp.com/CDw7hpI30WjCyKFAVLHNhZ)
-* Comunidad Oficial [`¡Click aquí!`](https://chat.whatsapp.com/I0dMp2fEle7L6RaWBmwlAa)
+ * Canal Oficial  [`¡Click aquí!`](https://whatsapp.com/channel/0029VbAoYE99hXF1wm3zmQ21)
+* Grupo Oficial [`¡Click aquí!`](https://chat.whatsapp.com/JONU3lLJhCf0JgCuL13gwk)
+* Comunidad Oficial [`¡Click aquí!`](https://chat.whatsapp.com/JONU3lLJhCf0JgCuL13gwk)
 </details>
 
 <details>
 <summary><b> ✰ Contáctos</b></summary>
 
-* WhatsApp: [`Aquí`](https:/Wa.me/528211111111)
-* Correo: [`Aquí`](thekingdestroy507@gmail.com)
+* WhatsApp: [`Aquí`](https:/Wa.me/524181450063)
+* solicita bot officual: [`Aquí`](https://wa.me/527461177130)
 
 </details>
 
