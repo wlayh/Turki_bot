@@ -1,10 +1,10 @@
-<h1 align="center">『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』</h1>
+<h1 align="center">👑『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』👑</h1>
 
  <img src= "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgwEyPc2ZcSJLv1nKjMoNcqTD_PZl1Zk9ujraVrJSEw_efKhnurC6XGA6VOj73W-ygzfgfou1-g_3EzCX41BCiLXPvTjcIUy4BL78F9l9MuQlWAIg4E3DjO-Kx-qO-yIIhkOyeYaqDeyx8MW4EusFhzDUqID_Pk2RRUWhDfHErCquK71DBo9v4BhRjtXBNt/s736/b63bb3b9-7464-494f-937f-9aa4394cb124.jpg">
     </p>
 
 
-<h1 align="center">EL BOT SE ACTUALIZA CADA SEMANA O MES Y SELE ASE MANTENIMIENTO EN ESTE REPOSITORIO ASI QUE ESTEN ALPENDIENTE EN EL CANAL PARA QUE ACTUALIZEN SU BOT SI SON PRINCIPALES SE ACTUALIZA CON #UPDATE </h1>
+<h1 align="center">🌟SI ME DAS UNA ESTRELLA ME AYUDARIA MUCHO🌟</h1>
 
 
 
@@ -140,4 +140,4 @@ href="https://github.com/Fer280809"><img src="https://github.com/Fer280809.png" 
     <img src="https://github.com/edward-1738.png" width="130" height="130" alt="Alex-X" style="border-radius: 50%;"/>
 </a>
 
-<h1 align="center">SI ME DAS UNA ESTRELLA ME AYUDARIA MUCHO</h1>
+<h1 align="center">⚔️ EL BOT SE ACTUALIZA CADA SEMANA O MES Y SELE ASE MANTENIMIENTO EN ESTE REPOSITORIO ASI QUE ESTEN ALPENDIENTE EN EL CANAL PARA QUE ACTUALIZEN SU BOT ⚔️ </h1>
