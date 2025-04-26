@@ -137,8 +137,8 @@ href="https://github.com/Fer280809"><img src="https://github.com/Fer280809.png" 
 𝕱𝖊𝖗𝖓𝖆𝖓𝖉𝖔"/></a>
 
 ### **`❀ Colaboradores`**
-<a href="https://github.com/The-King-Destroy/Yuki_Suou-Bot/graphs/contributors">
-<img src="https://contrib.rocks/image?repo=The-King-Destroy/Yuki_Suou-Bot" /> 
+<a href="[https://github.com/The-King-Destroy/Yuki_Suou-Bot/graphs/contributors](https://github.com/Fer280809/Asta_bot/graphs/contributors)">
+<img src="https://contrib.rocks/image?repo=Fer280809/Asta_bot" /> 
 </a>
 
 ### **`🜸 Créditos`**
