@@ -130,14 +130,31 @@ EL BOT SE ACTUALIZA CADA SEMANA O MES Y SELE ASE MANTENIMIENTO EN ESTE REPOSITOR
 
 ---
 
+
 ### **`ᥫ᭡ Propietario`**
 <a
 href="https://github.com/Fer280809"><img src="https://github.com/Fer280809.png" width="330" height="330" alt="
 𝕱𝖊𝖗𝖓𝖆𝖓𝖉𝖔"/></a>
 
+### **`❀ Colaboradores`**
+<a href="https://github.com/The-King-Destroy/Yuki_Suou-Bot/graphs/contributors">
+<img src="https://contrib.rocks/image?repo=The-King-Destroy/Yuki_Suou-Bot" /> 
+</a>
+
 ### **`🜸 Créditos`**
 <a href="https://github.com/edward-1738" style="display:inline-block; text-decoration: none;">
     <img src="https://github.com/edward-1738.png" width="130" height="130" alt="Alex-X" style="border-radius: 50%;"/>
 </a>
+<a href="https://github.com/DevAlexJs" style="display:inline-block; text-decoration: none;">
+    <img src="https://github.com/DevAlexJs.png" width="130" height="130" alt="Alex-X" style="border-radius: 50%;"/>
+</a>
+<a href="https://github.com/David-Chian" style="display:inline-block; margin-right: 10px; text-decoration: none;">
+    <img src="https://github.com/David-Chian.png" width="130" height="130" alt="David-Chian" style="border-radius: 50%;"/>
+</a>
+</a>
+<a href="https://github.com/The-King-Destroy" style="display:inline-block; margin-right: 10px; text-decoration: none;">
+    <img src="https://github.com/The-King-Destroy.png" width="130" height="130" alt="ⁱᵃᵐ|𝔇ĕ𝐬†𝓻⊙γ𒆜" style="border-radius: 50%;"/>
+</a>
+
 
 <h1 align="center">⚔️ EL BOT SE ACTUALIZA CADA SEMANA O MES Y SELE ASE MANTENIMIENTO EN ESTE REPOSITORIO ASI QUE ESTEN ALPENDIENTE EN EL CANAL PARA QUE ACTUALIZEN SU BOT ⚔️ </h1>
