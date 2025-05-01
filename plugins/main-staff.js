@@ -37,9 +37,8 @@ let staff = `ᥫ᭡ *EQUIPO DE AYUDANTES* ❀
 ᰔᩚ Legna
 > 🜸 Rol » *Mini-Dev* 
 > ✧ GitHub » https://github.com/Legna-chan
-
 `
-await conn.sendFile(m.chat, img, 'yuki.jpg', staff.trim(), fkontak)
+await conn.sendFile(m.chat, img, 'Asta.jpg', staff.trim(), fkontak)
 }
   
 handler.help = ['staff']
