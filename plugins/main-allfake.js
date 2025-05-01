@@ -37,7 +37,7 @@ global.namecomu = '『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』'
 global.listo = '❀ *Aquí tienes ฅ^•ﻌ•^ฅ*'
 global.fotoperfil = await conn.profilePictureUrl(m.sender, 'image').catch(_ => 'https://raw.githubusercontent.com/The-King-Destroy/Adiciones/main/Contenido/1745522645448.jpeg')
 
-global.canalIdM = ["120363416409380841@newsletter", "120363416409380841@newsletter"]
+global.canalIdM = ["120363399175402285@newsletter", "120363399175402285@newsletter"]
 global.canalNombreM = ["『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』", "『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』"]
 global.channelRD = await getRandomChannel()
 
