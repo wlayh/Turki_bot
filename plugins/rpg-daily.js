@@ -1,31 +1,166 @@
+import moment from 'moment-timezone';
+
 var handler = async (m, { conn }) => {
-    let coin = Math.floor(Math.random() * (500 - 100 + 1)) + 100;
-    let exp = Math.floor(Math.random() * (500 - 100 + 1)) + 100;
-    let d = Math.floor(Math.random() * (500 - 100 + 1)) + 100;
-
-    global.db.data.users[m.sender].diamond += d;
-    global.db.data.users[m.sender].coin += coin;
-
-    let time = global.db.data.users[m.sender].lastclaim + 86400000;
-    if (new Date() - global.db.data.users[m.sender].lastclaim < 7200000) {
-        return conn.reply(m.chat, `${emoji4} *Vuelve en ${msToTime(time - new Date())}*`, m);
+    // Obtener referencia al usuario
+    let user = global.db.data.users[m.sender];
+    let name = conn.getName(m.sender);
+    
+    // Calcular recompensas con bonificaciones basadas en nivel
+    let nivel = user.level || 1;
+    let multiplier = 1 + (nivel * 0.05); // Bonificación de 5% por nivel
+    
+    // Calcular recompensas base aleatorias
+    let coin = Math.floor((Math.random() * (500 - 100 + 1)) + 100);
+    let exp = Math.floor((Math.random() * (500 - 100 + 1)) + 100);
+    let diamond = Math.floor((Math.random() * (500 - 100 + 1)) + 100);
+    
+    // Aplicar multiplicador basado en nivel
+    coin = Math.floor(coin * multiplier);
+    exp = Math.floor(exp * multiplier);
+    diamond = Math.floor(diamond * multiplier);
+    
+    // Bonificación para usuarios premium
+    if (user.premium) {
+        coin *= 2;
+        exp *= 2;
+        diamond *= 2;
     }
+    
+    // Verificar si puede reclamar recompensas diarias
+    let cooldown = 86400000; // 24 horas en milisegundos
+    let lastClaim = user.lastclaim || 0;
+    let now = new Date();
+    let availableAt = lastClaim + cooldown;
+    
+    // Verificar si el usuario está en cooldown
+    if (now < availableAt) {
+        // Si está en cooldown, mostrar tiempo restante
+        let timeRemaining = msToTime(availableAt - now);
+        
+        let cooldownMessage = `*╭━━━━❰ ⏰ RECOMPENSA EN ESPERA ⏰ ❱━━━━╮*
+*┃*
+*┃* *${emoji4} ¡Ya reclamaste tu recompensa diaria!*
+*┃* 
+*┃* *⏳ Tiempo restante:* ${timeRemaining}
+*┃*
+*┃* *📆 Próxima recompensa disponible:*
+*┃* ${moment(availableAt).format('DD/MM/YYYY HH:mm:ss')}
+*┃*
+*┃* *💡 Consejo:* Mientras esperas, puedes
+*┃* jugar minijuegos o interactuar con el bot
+*┃* para ganar más recompensas.
+*┃*
+*╰━━━━━━━━━━━━━━━━━━━━━━━╯*`;
+        
+        return conn.reply(m.chat, cooldownMessage, m);
+    }
+    
+    // Generar eventos aleatorios para hacer más interesante la recompensa
+    let events = [
+        {name: "Racha de suerte", bonus: {coin: 250, exp: 150, diamond: 50}, chance: 0.15},
+        {name: "Tesoro encontrado", bonus: {coin: 500, exp: 0, diamond: 100}, chance: 0.10},
+        {name: "Inspiración repentina", bonus: {coin: 0, exp: 300, diamond: 0}, chance: 0.20},
+        {name: "Gema brillante", bonus: {coin: 0, exp: 0, diamond: 200}, chance: 0.05}
+    ];
+    
+    // Seleccionar evento aleatorio si hay suerte
+    let specialEvent = null;
+    let randomValue = Math.random();
+    for (let event of events) {
+        if (randomValue <= event.chance) {
+            specialEvent = event;
+            
+            // Aplicar bonus del evento
+            coin += event.bonus.coin;
+            exp += event.bonus.exp;
+            diamond += event.bonus.diamond;
+            break;
+        }
+    }
+    
+    // Aplicar las recompensas al usuario
+    user.diamond += diamond;
+    user.coin += coin;
+    user.exp += exp;
+    user.lastclaim = now.getTime();
+    
+    // Calcular racha de días
+    let streak = user.dailyStreak || 0;
+    let lastClaimDate = lastClaim ? new Date(lastClaim) : null;
+    let yesterday = new Date(now);
+    yesterday.setDate(yesterday.getDate() - 1);
+    
+    // Comprobar si el último reclamo fue ayer
+    if (lastClaimDate && lastClaimDate.toDateString() === yesterday.toDateString()) {
+        streak++;
+        
+        // Bonificación por racha
+        if (streak % 7 === 0) {
+            // Bonificación especial cada 7 días
+            let streakBonus = streak * 10;
+            coin += streakBonus;
+            exp += streakBonus;
+            diamond += Math.floor(streakBonus / 10);
+        }
+    } else if (lastClaimDate && lastClaimDate.toDateString() !== now.toDateString()) {
+        // Reiniciar racha si no fue el día anterior
+        streak = 1;
+    } else if (!lastClaimDate) {
+        // Primera vez
+        streak = 1;
+    }
+    
+    user.dailyStreak = streak;
+    
+    // Construir mensaje de recompensa
+    let rewardMessage = `*╭━━━━❰ 🎁 RECOMPENSA DIARIA 🎁 ❱━━━━╮*
+*┃*
+*┃* *🌟 ¡Felicidades, ${name}!*
+*┃* *Has reclamado tu recompensa diaria*
+*┃*
+*┃* *━━━━❰ 💰 RECOMPENSAS 💰 ❱━━━━*
+*┃*
+*┃* *✨ Experiencia:* +${exp}
+*┃* *💎 Diamantes:* +${diamond}
+*┃* *💵 ${moneda}:* +${coin}
+*┃*`;
 
-    global.db.data.users[m.sender].exp += exp;
-    conn.reply(m.chat, `${emoji} 
-*TE HAS ESFORSADO TODO EL DIA DE HOY OPTEN UNA RECOMPENSA POR ESO*
+    // Añadir información de racha
+    rewardMessage += `
+*┃* *━━━━❰ 🔥 RACHA DIARIA 🔥 ❱━━━━*
+*┃*
+*┃* *📆 Racha actual:* ${streak} día${streak !== 1 ? 's' : ''}
+*┃* *⏰ Próxima recompensa:* En 24 horas
+*┃*`;
 
-RECOMPENSA:
-✨ Xp : *+${exp}*
-💎 Diamantes : *+${d}*
-💸 ${moneda} : *+${coin}*`, m);
+    // Añadir evento especial si ocurrió
+    if (specialEvent) {
+        rewardMessage += `
+*┃* *━━━━❰ 🎉 ¡EVENTO ESPECIAL! 🎉 ❱━━━━*
+*┃*
+*┃* *🎊 ${specialEvent.name}*
+*┃* *Has recibido bonificaciones adicionales*
+*┃*`;
+    }
+    
+    // Añadir bonificación por nivel
+    rewardMessage += `
+*┃* *━━━━❰ 📊 BONIFICACIONES 📊 ❱━━━━*
+*┃*
+*┃* *🌟 Nivel ${nivel}:* +${Math.floor(multiplier * 100 - 100)}% 
+*┃* ${user.premium ? '*👑 Premium:* +100% bonus' : '*💡 Consejo:* Hazte premium para x2 recompensas'}
+*┃*
+*╰━━━━━━━━━━━━━━━━━━━━━━━╯*
 
-    global.db.data.users[m.sender].lastclaim = Date.now();
+*📢 Regresa mañana para mantener tu racha*
+*🎮 Usa /nivel para ver tu progreso actual*`;
+
+    conn.reply(m.chat, rewardMessage, m);
 }
 
 handler.help = ['daily', 'claim'];
 handler.tags = ['rpg'];
-handler.command = ['daily', 'diario'];
+handler.command = ['daily', 'diario', 'claim', 'reclamar'];
 handler.group = true;
 handler.register = true;
 
