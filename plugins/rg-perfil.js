@@ -22,25 +22,73 @@ let handler = async (m, { conn, args }) => {
     let role = user.role || 'Sin Rango';
     let coins = user.coin || 0;
     let bankCoins = user.bank || 0;
+    
+    // Obtener la fecha actual
+    const now = moment();
+    const registerDate = user.regTime ? moment(user.regTime) : now;
+    const timeDiff = now.diff(registerDate, 'days');
+    
+    // Actividad reciente
+    const lastSeen = user.lastSeen ? moment(user.lastSeen).fromNow() : 'Desconocido';
 
     let perfil = await conn.profilePictureUrl(userId, 'image').catch(_ => 'https://raw.githubusercontent.com/The-King-Destroy/Adiciones/main/Contenido/1745522645448.jpeg');
 
+    // Emojis según género
+    let genderEmoji = '⚪';
+    if (genero.toLowerCase().includes('hombre') || genero.toLowerCase().includes('masculino')) {
+        genderEmoji = '♂️';
+    } else if (genero.toLowerCase().includes('mujer') || genero.toLowerCase().includes('femenino')) {
+        genderEmoji = '♀️';
+    }
+    
+    // Estado premium con bling
+    let premiumStatus = user.premium ? '✨ PREMIUM ✨' : '❌ FREE';
+    
+    // Emojis para rangos
+    let roleEmoji = '👤';
+    if (role.toLowerCase().includes('admin')) roleEmoji = '👑';
+    else if (role.toLowerCase().includes('mod')) roleEmoji = '🛡️';
+    else if (role.toLowerCase().includes('vip')) roleEmoji = '💎';
+
     let profileText = `
-「✿」 *Perfil* ◢@${userId.split('@')[0]}◤
-${description}
+*╭━━━━❰ 🌟 PERFIL DE USUARIO 🌟 ❱━━━━╮*
+*┃*
+*┃* *👤 Usuario:* @${userId.split('@')[0]}
+*┃* *🏷️ Nombre:* ${name}
+*┃* *📝 Descripción:* 
+*┃* ${description}
+*┃*
+*┃* *━━━━❰ ℹ️ INFORMACIÓN PERSONAL ℹ️ ❱━━━━*
+*┃* 
+*┃* *🎂 Edad:* ${user.age || 'Desconocida'}
+*┃* *🎊 Cumpleaños:* ${cumpleanos}
+*┃* *${genderEmoji} Género:* ${genero}
+*┃* *💘 Estado Civil:* ${pareja !== 'Nadie' ? `💍 Casado con ${pareja}` : '💔 Soltero'}
+*┃* *⏱️ Registrado hace:* ${timeDiff} días
+*┃* *⌚ Última actividad:* ${lastSeen}
+*┃*
+*┃* *━━━━❰ 🏆 ESTADÍSTICAS 🏆 ❱━━━━*
+*┃*
+*┃* *✨ Experiencia:* ${exp.toLocaleString()}
+*┃* *🔥 Nivel:* ${nivel}
+*┃* *${roleEmoji} Rango:* ${role}
+*┃*
+*┃* *━━━━❰ 💰 ECONOMÍA 💰 ❱━━━━*
+*┃*
+*┃* *👛 Cartera:* ${coins.toLocaleString()} ${moneda}
+*┃* *🏦 Banco:* ${bankCoins.toLocaleString()} ${moneda}
+*┃* *💼 Total:* ${(coins + bankCoins).toLocaleString()} ${moneda}
+*┃*
+*┃* *━━━━❰ 🌈 ESTADOS 🌈 ❱━━━━*
+*┃*
+*┃* *👑 Premium:* ${premiumStatus}
+*┃* *🧩 Estado VIP:* ${user.vip ? '✅ Activado' : '❌ Desactivado'}
+*┃* *🛡️ Reputación:* ${user.reputation || 0} ⭐
+*┃*
+*╰━━━━━━━━━━━━━━━━━━━━━━━╯*
 
-✦ Edad » ${user.age || 'Desconocida'}
-♛ *Cumpleaños* » ${cumpleanos}
-⚥ *Género* » ${genero}
-♡ *Casado con* » ${pareja}
-
-☆ *Experiencia* » ${exp.toLocaleString()}
-❖ *Nivel* » ${nivel}
-✎ Rango » ${role}
-
-⛁ *Coins Cartera* » ${coins.toLocaleString()} ${moneda}
-⛃ *Coins Banco* » ${bankCoins.toLocaleString()} ${moneda}
-❁ *Premium* » ${user.premium ? '✅' : '❌'}
+*🔮 Usa el comando /editar para personalizar tu perfil* 
+*💫 Gana más experiencia interactuando en el grupo*
   `.trim();
 
     await conn.sendMessage(m.chat, { 
@@ -48,7 +96,7 @@ ${description}
         contextInfo: {
             mentionedJid: [userId],
             externalAdReply: {
-                title: '✧ Perfil de Usuario ✧',
+                title: '✧・✦・💫 Perfil de Usuario 💫・✦・✧',
                 body: dev,
                 thumbnailUrl: perfil,
                 mediaType: 1,
@@ -59,7 +107,7 @@ ${description}
     }, { quoted: m });
 };
 
-handler.help = ['profile'];
+handler.help = ['profile', 'perfil'];
 handler.tags = ['rg'];
 handler.command = ['profile', 'perfil'];
 
