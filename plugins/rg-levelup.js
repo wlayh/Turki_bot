@@ -1,5 +1,6 @@
 import { canLevelUp, xpRange } from '../lib/levelling.js';
 import db from '../lib/database.js';
+import moment from 'moment-timezone';
 
 let handler = async (m, { conn }) => {
     let mentionedUser = m.mentionedJid[0];
@@ -9,7 +10,9 @@ let handler = async (m, { conn }) => {
     let user = global.db.data.users[who];
 
     if (!user) {
-        await conn.sendMessage(m.chat, "No se encontraron datos del usuario.", { quoted: m });
+        await conn.sendMessage(m.chat, { 
+            text: "⚠️ *No se encontraron datos del usuario.* ⚠️\nAsegúrate de que el usuario esté registrado en el bot." 
+        }, { quoted: m });
         return;
     }
 
@@ -18,31 +21,103 @@ let handler = async (m, { conn }) => {
     let before = user.level * 1;
     while (canLevelUp(user.level, user.exp, global.multiplier)) user.level++;
 
+    // Crear una barra de progreso visual
+    const createProgressBar = (percent) => {
+        const completed = Math.floor(percent / 10);
+        const remaining = 10 - completed;
+        return '▰'.repeat(completed) + '▱'.repeat(remaining);
+    };
+
+    // Calcular porcentaje de progreso
+    const progressPercent = Math.floor(((user.exp - min) / xp) * 100);
+    const progressBar = createProgressBar(progressPercent);
+
+    // Preparar fecha con formato más amigable
+    const currentDate = moment().format('DD/MM/YYYY HH:mm:ss');
+
+    // Obtener usuarios y clasificación
+    let users = Object.entries(global.db.data.users).map(([key, value]) => {
+        return { ...value, jid: key };
+    });
+
+    let sortedLevel = users.sort((a, b) => (b.level || 0) - (a.level || 0));
+    let rank = sortedLevel.findIndex(u => u.jid === who) + 1;
+
+    // Determinar emojis para el rango
+    let rankEmoji = '👤';
+    if (rank === 1) rankEmoji = '🏆';
+    else if (rank === 2) rankEmoji = '🥈';
+    else if (rank === 3) rankEmoji = '🥉';
+    else if (rank <= 10) rankEmoji = '🌟';
+    else if (rank <= 20) rankEmoji = '⭐';
+
+    // Emoji para el rango de nivel
+    let levelEmoji = '📊';
+    if (user.level >= 100) levelEmoji = '🔱';
+    else if (user.level >= 50) levelEmoji = '💫';
+    else if (user.level >= 25) levelEmoji = '✨';
+    else if (user.level >= 10) levelEmoji = '⚡';
+
     if (before !== user.level) {
-        let txt = `ᥫ᭡ Felicidades Has subido de nivel ❀\n\n`; 
-        txt += `*${before}* ➔ *${user.level}* [ ${user.role} ]\n\n`;
-        txt += `• ✰ *Nivel anterior* : ${before}\n`;
-        txt += `• ✦ *Nuevos niveles* : ${user.level}\n`;
-        txt += `• ❖ *Fecha* : ${new Date().toLocaleString('id-ID')}\n\n`;
-        txt += `> ➨ Nota: *Cuanto más interactúes con el Bot, mayor será tu nivel.*`;
-        await conn.sendMessage(m.chat, { text: txt }, { quoted: m });
+        // Mensaje de subida de nivel
+        let txt = `*╭━━━━❰ 🎉 ¡SUBIDA DE NIVEL! 🎉 ❱━━━━╮*\n`;
+        txt += `*┃*\n`;
+        txt += `*┃* *🌟 ¡FELICIDADES @${who.split('@')[0]}! 🌟*\n`;
+        txt += `*┃*\n`;
+        txt += `*┃* *━━━━❰ 🏆 NUEVA EVOLUCIÓN 🏆 ❱━━━━*\n`;
+        txt += `*┃*\n`;
+        txt += `*┃* *${levelEmoji} Nivel:* *${before}* ➔ *${user.level}*\n`;
+        txt += `*┃* *👑 Rango:* *${user.role}*\n`;
+        txt += `*┃* *⏰ Fecha:* ${currentDate}\n`;
+        txt += `*┃*\n`;
+        txt += `*┃* *━━━━❰ 🎯 RECOMPENSAS 🎯 ❱━━━━*\n`;
+        txt += `*┃*\n`;
+        txt += `*┃* *💰 Coins:* +${user.level * 100}\n`;
+        txt += `*┃* *💎 Gemas:* +${user.level}\n`;
+        txt += `*┃* *🔮 Puntos:* +${user.level * 5}\n`;
+        txt += `*┃*\n`;
+        txt += `*┃* *🔔 Nota:* Cuanto más interactúes con el Bot,\n`;
+        txt += `*┃* mayor será tu nivel y mejores recompensas\n`;
+        txt += `*┃* obtendrás. ¡Sigue así! 🚀\n`;
+        txt += `*┃*\n`;
+        txt += `*╰━━━━━━━━━━━━━━━━━━━━━━━╯*`;
+        
+        await conn.sendMessage(m.chat, { 
+            text: txt,
+            mentions: [who]
+        }, { quoted: m });
     } else {
-        let users = Object.entries(global.db.data.users).map(([key, value]) => {
-            return { ...value, jid: key };
-        });
+        // Mensaje de información de nivel
+        let txt = `*╭━━━━❰ 📊 ESTADÍSTICAS DE NIVEL 📊 ❱━━━━╮*\n`;
+        txt += `*┃*\n`;
+        txt += `*┃* *👤 Usuario:* @${who.split('@')[0]}\n`;
+        txt += `*┃* *🌈 Nombre:* ${name}\n`;
+        txt += `*┃*\n`;
+        txt += `*┃* *━━━━❰ 🏅 PROGRESO ACTUAL 🏅 ❱━━━━*\n`;
+        txt += `*┃*\n`;
+        txt += `*┃* *${levelEmoji} Nivel:* ${user.level}\n`;
+        txt += `*┃* *✨ Experiencia:* ${user.exp.toLocaleString()} XP\n`;
+        txt += `*┃* *👑 Rango:* ${user.role}\n`;
+        txt += `*┃*\n`;
+        txt += `*┃* *📈 Progreso:*\n`;
+        txt += `*┃* *${progressBar}* ${progressPercent}%\n`;
+        txt += `*┃* *${user.exp - min}/${xp} XP* para subir al nivel ${user.level + 1}\n`;
+        txt += `*┃*\n`;
+        txt += `*┃* *━━━━❰ 🏆 CLASIFICACIÓN 🏆 ❱━━━━*\n`;
+        txt += `*┃*\n`;
+        txt += `*┃* *${rankEmoji} Posición:* #${rank} de ${sortedLevel.length} usuarios\n`;
+        txt += `*┃* *📝 Comandos usados:* ${user.commands || 0}\n`;
+        txt += `*┃* *⏱️ Último uso:* ${user.lastLevelUp ? moment(user.lastLevelUp).fromNow() : 'Desconocido'}\n`;
+        txt += `*┃*\n`;
+        txt += `*┃* *💡 Consejo: Usa /daily para obtener XP diario*\n`;
+        txt += `*┃* *🎮 Los minijuegos también otorgan experiencia*\n`;
+        txt += `*┃*\n`;
+        txt += `*╰━━━━━━━━━━━━━━━━━━━━━━━╯*`;
 
-        let sortedLevel = users.sort((a, b) => (b.level || 0) - (a.level || 0));
-        let rank = sortedLevel.findIndex(u => u.jid === who) + 1;
-
-        let txt = `*「✿」Usuario* ◢ ${name} ◤\n\n`;
-        txt += `✦ Nivel » *${user.level}*\n`;
-        txt += `✰ Experiencia » *${user.exp}*\n`;
-        txt += `❖ Rango » ${user.role}\n`;
-        txt += `➨ Progreso » *${user.exp - min} => ${xp}* _(${Math.floor(((user.exp - min) / xp) * 100)}%)_\n`;
-        txt += `# Puesto » *${rank}* de *${sortedLevel.length}*\n`;
-        txt += `❒ Comandos totales » *${user.commands || 0}*`;
-
-        await conn.sendMessage(m.chat, { text: txt }, { quoted: m });
+        await conn.sendMessage(m.chat, { 
+            text: txt,
+            mentions: [who]
+        }, { quoted: m });
     }
 }
 
