@@ -10,6 +10,47 @@ export async function before(m, { conn, isAdmin, isBotAdmin }) {
     // No hacer nada si el mensaje es del bot
     if (m.fromMe) return true;
     
+    // Manejar comandos de activación/desactivación
+    if (isAdmin && m.text) {
+        const text = m.text.toLowerCase();
+        
+        // Comando para activar antilink3
+        if (text === 'antilink3 on') {
+            if (chat.antiLink3) {
+                await conn.sendMessage(m.chat, { text: '❗ El antilink3 ya estaba activado en este grupo.' });
+            } else {
+                chat.antiLink3 = true;
+                await conn.sendMessage(m.chat, { 
+                    text: `*╭━━━━━━━━━━━━━━━╮*
+*┃    ✅ ANTILINK3 ACTIVADO    ┃*
+*╰━━━━━━━━━━━━━━━╯*
+
+Se ha activado la protección contra enlaces.
+Ahora se eliminarán los mensajes que contengan links y se advertirá al usuario.`
+                });
+            }
+            return true;
+        }
+        
+        // Comando para desactivar antilink3
+        if (text === 'antilink3 off') {
+            if (!chat.antiLink3) {
+                await conn.sendMessage(m.chat, { text: '❗ El antilink3 ya estaba desactivado en este grupo.' });
+            } else {
+                chat.antiLink3 = false;
+                await conn.sendMessage(m.chat, { 
+                    text: `*╭━━━━━━━━━━━━━━━╮*
+*┃    ❌ ANTILINK3 DESACTIVADO    ┃*
+*╰━━━━━━━━━━━━━━━╯*
+
+Se ha desactivado la protección contra enlaces.
+Los usuarios podrán compartir links sin restricciones.`
+                });
+            }
+            return true;
+        }
+    }
+    
     // Patrones para detectar enlaces
     const linkRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)/gi;
     const whatsappLinkRegex = /chat.whatsapp.com\/([0-9A-Za-z]{20,24})/gi;
@@ -20,7 +61,8 @@ export async function before(m, { conn, isAdmin, isBotAdmin }) {
     // Verificar si contiene enlaces
     const containsLink = linkRegex.test(messageText) || whatsappLinkRegex.test(messageText);
     
-    if (containsLink && chat.antiLink) {
+    // Verificar si antiLink3 está activado (usando antiLink3 en lugar de antiLink)
+    if (containsLink && chat.antiLink3) {
         // Solo actuar si no es admin y el bot es admin
         if (!isAdmin && isBotAdmin) {
             // Borrar el mensaje
