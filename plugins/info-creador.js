@@ -11,8 +11,9 @@ let handler = async (m, { conn }) => {
   let name = await conn.getName(who);
 
   await sendContactArray(conn, m.chat, [
-    [`${suittag}`, `ᰔᩚ Propietario`, botname, `❀ No Hacer Spam`, correo, `⊹˚• Venezuela •˚⊹`, md, bio],
-    [`${conn.user.jid.split('@')[0]}`, `✦ Es Un Bot`, packname, dev, correo, `Sabra Dios 🫏`, channel, biobot]
+    [`${suittag}`, `𝕱𝖊𝖗𝖓𝖆𝖓𝖉𝖔`, botname, `❀ No Hacer Spam`, correo, `⊹˚• Mexico •˚⊹`, md, bio],
+    [`${conn.user.jid.split('@')[0]}`, `✦ Es Un Bot`, packname, dev, correo, `Donde vives tu 🫏`, channel, biobot],
+    [`527461177130`, `Asistencia`, `Bot Oficial`, `Asistencia del Bot`, correo, `Mexico`, channel, `Bot de Asistencia`] // Información del nuevo contacto
   ], m);
 }
 
@@ -57,3 +58,4 @@ END:VCARD`.trim();
     ...options
   });
 }
+
