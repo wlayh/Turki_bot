@@ -147,6 +147,19 @@ npm start
 ---
 
 <div align="center">
+  <h2 style="background: linear-gradient(to right, #FF0000, #00FF00, #0000FF); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 30px; font-weight: bold; margin: 20px 0;">📢 ¡ÚNETE AL CANAL OFICIAL DEL BOT ASTA! 📢</h2>
+  
+  <p style="color: #FF9900; font-size: 18px; margin-bottom: 15px;">En nuestro canal estaremos compartiendo todas las novedades, actualizaciones y tips exclusivos</p>
+  
+  <a href="https://whatsapp.com/channel/0029VbAoYE99hXF1wm3zmQ21" style="display: inline-block; background: linear-gradient(to right, #25D366, #128C7E); color: white; font-weight: bold; padding: 12px 30px; text-decoration: none; border-radius: 30px; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.5); transition: all 0.3s ease;">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/768px-WhatsApp.svg.png" height="20px" style="vertical-align: middle; margin-right: 8px;">
+    ACCEDER AL CANAL AHORA
+  </a>
+  
+  <p style="color: #FF5252; font-size: 16px; margin-top: 15px;">💎 No te pierdas ninguna actualización importante 💎</p>
+</div>
+
+<div align="center">
   <h2>👑 CREADOR DEL BOT 👑</h2>
   <a href="https://github.com/Fer280809">
     <img src="https://github.com/Fer280809.png" width="250" height="250" alt="𝕱𝖊𝖗𝖓𝖆𝖓𝖉𝖔" style="border-radius: 50%; border: 5px solid gold; box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);">
@@ -181,5 +194,5 @@ npm start
 <h1 align="center">⚡ EL BOT SE ACTUALIZA SEMANALMENTE ⚡</h1>
 
 <div align="center">
-  <a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.herokuapp.com?font=Russo+One&weight=800&size=28&pause=1000&color=F7DE00&width=650&center=true&vCenter=true&random=false&width=650&lines=%F0%9F%94%A5+MANT%C3%89N+TU+BOT+SIEMPRE+ACTUALIZADO+%F0%9F%94%A5;%E2%AD%90+NUEVAS+FUNCIONES+CADA+SEMANA+%E2%AD%90;%F0%9F%9A%80+SÍGUENOS+EN+EL+CANAL+PARA+NOVEDADES+%F0%9F%9A%80" alt="Typing SVG" /></a>
+  <a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.herokuapp.com?font=Russo+One&weight=800&size=28&pause=1000&color=F7DE00&width=650&center=true&vCenter=true&random=false&width=650&lines=%F0%9F%94%A5+MANT%C3%89N+TU+BOT+SIEMPRE+ACTUALIZADO+%F0%9F%94%A5;%E2%AD%90+NUEVAS+FUNCIONES+CADA+SEMANA+%E2%AD%90;%F0%9F%9A%80+S%C3%8DGUENOS+EN+EL+CANAL+PARA+NOVEDADES+%F0%9F%9A%80" alt="Typing SVG" /></a>
 </div>
