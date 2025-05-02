@@ -17,11 +17,11 @@ export async function before(m, { conn, participants, groupMetadata }) {
   }
 
   if (chat.welcome && m.messageStubType == 27) {
-    let bienvenida = `*\n*╔═══════════════╗*\n*║🎉 *¡BIENVENIDO/A!* 🎉*\n*╠═══════════════╣*\n*║  😔 @${m.messageStubParameters[0].split`@`[0]}*\n*║*\n*║  🚪 *Se ha ido de:**\n*║  ${groupMetadata.subject}*\n*║*\n*║  👥 *Ahora somos:* ${groupSize}*\n*║*\n*║  ${global.welcom2}*\n*║*\n*║  ¡Te extrañaremos!*\n*╚═══════════════╝*`    
+    let bienvenida = `*\n *╭━〔👑 *ASTA-BOT* 👑  〕* \n *┋* \n *┋「 🎉 *¡BIENVENIDO/A!* 👋 」* \n *┋* \n *┋* 「 ${groupMetadata.subject} 」 \n *┋* \n *╰━★ 「*.   @${m.messageStubParameters[0].split`@`[0]} . *」* \n *╭━━━━━━ * \n *┋❖ Le las reglas de la descricion* \n *┋❀ Espero que te la lleves bien * \n *┋❖ Haora somos* ${groupSize} \n *┗━━━━━━━━━━━━━━━┅ ⳹* \n  ${global.welcom2}`    
     await conn.sendMini(m.chat, txt, dev, bienvenida, img, img, redes, fkontak)
   }
   
   if (chat.welcome && (m.messageStubType == 28 || m.messageStubType == 32)) {
-    let bye = `*\n*╔═══════════════╗*\n*║  👋 *¡ADIÓS!* 👋*\n*╠═══════════════╣*\n*║  😔 @${m.messageStubParameters[0].split`@`[0]}*\n*║*\n*║  🚪 *Se ha ido de:**\n*║  ${groupMetadata.subject}*\n*║*\n*║  👥 *Ahora somos:* ${groupSize}*\n*║*\n*║  ${global.welcom2}*\n*║*\n*║  ¡Te extrañaremos!*\n*╚═══════════════╝*`
+    let bye = `* *╭━〔👑 *ASTA-BOT* 👑  〕* \n *┋* \n *┋「  *¡ADIOS!* 👋 」* \n *┋* \n *┋* 「 ${groupMetadata.subject} 」 \n *┋* \n *╰━★ 「*.   @${m.messageStubParameters[0].split`@`[0]} . *」* \n *╭━━━━━━ * \n *┋❖ Que bueno se fue un mas* \n *┋❀ Jamás te quisimos aquí* \n *┋❖ Haora somos* ${groupSize} \n *┗━━━━━━━━━━━━━━━┅ ⳹* \n  ${global.welcom2}`
     await conn.sendMini(m.chat, txt1, dev, bye, img, img, redes, fkontak)
   }}
