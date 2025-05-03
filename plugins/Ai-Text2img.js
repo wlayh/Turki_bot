@@ -20,7 +20,7 @@ var handler = async (m, { text, usedPrefix, command }) => {
     }
 }
 
-handler.command = ['text2img'];
+handler.command = ['aitex'];
 handler.help = ['text2img'];
 handler.tags = ['ai-imagen'];
 export default handler;
