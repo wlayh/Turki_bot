@@ -38,7 +38,7 @@ let handler = async (m, { conn, args }) => {
 │ 🔞 *menu+ o menu18* 
 │    ➟ Ver el menú de contenido +18
 │ 
-│ 🎨 *menulogo o menul* 
+│ 🎨 *crearlogo* 
 │    ➟ Ver el menú de logos y efectos
 ╰━━━━━━━━━━━━━━━━━
 
