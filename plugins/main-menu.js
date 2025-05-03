@@ -636,6 +636,8 @@ let handler = async (m, { conn, args }) => {
 > ✦ crea un logo simple
 ᰔᩚ *#adivinar 
 > ✦ Adivina el personaje o pelicula
+ᰔᩚ *#mods <texto> 
+> ✦ Descargar algun mods
   `.trim()
 
   await conn.sendMessage(m.chat, { 
