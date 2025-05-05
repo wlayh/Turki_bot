@@ -111,7 +111,14 @@ git clone https://github.com/Fer280809/Asta_bot && cd Asta_bot
 ```
 
 ```bash
-yarn install && npm install && npm update
+yarn install 
+```
+
+```bash
+npm install
+```
+```bash
+npm update
 ```
 
 ```bash
