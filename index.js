@@ -41,15 +41,15 @@ const PORT = process.env.PORT || process.env.SERVER_PORT || 3000
 //let require = createRequire(megu)
 let { say } = cfonts
 
-console.log(chalk.bold.redBright(`\n✰ Iniciando Asta-bot \n`))
+console.log(chalk.bold.redBright(`\n✰ Iniciando Yuki-Suou-Bot ✰\n`))
 
-say('Asta-bot', {
+say('Asta-Bot', {
 font: 'block',
 align: 'center',
 colors: ['magentaBright']
 })
 
-say(`Creador Fernando`, {
+say(`Developed By • Fernando`, {
 font: 'console',
 align: 'center',
 colors: ['blueBright']
@@ -157,9 +157,7 @@ defaultQueryTimeoutMs: undefined,
 version,
 }
 
-global.conn = makeWASocket(connectionOptions)
-
-if (conn?.ev && !conn.authState?.creds?.me) conn.ev.flush()
+global.conn = makeWASocket(connectionOptions);
 
 if (!fs.existsSync(`./${sessions}/creds.json`)) {
 if (opcion === '2' || methodCode) {
@@ -214,7 +212,7 @@ if (opcion == '1' || methodCodeQR) {
 console.log(chalk.bold.yellow(`\n❐ ESCANEA EL CÓDIGO QR EXPIRA EN 45 SEGUNDOS`))}
 }
 if (connection == 'open') {
-console.log(chalk.bold.green('\n❀ Asta_bot Conectada con éxito ❀'))
+console.log(chalk.bold.green('\n❀ YukiBot-MD Conectada con éxito ❀'))
 }
 let reason = new Boom(lastDisconnect?.error)?.output?.statusCode
 if (connection === 'close') {
