@@ -18,16 +18,16 @@
 "eslint": "eslint .",
 "eslintfix": "eslint --fix ."
 },
-"homepage": "",
+"homepage": "https://github.com/Fer280809/Asta_bot",
 "author": {
 "name": "Fer280809"
 },
 "repository": {
 "type": "git",
-"url": "git"
+"url": "githttps://github.com/Fer280809/Asta_bot.git"
 },
 "bugs": {
-"url": ""
+"url": "https://github.com/Fer280809/Asta_bot.git"
 },
 "license": "GPL-3.0-or-later",
 "dependencies": {
