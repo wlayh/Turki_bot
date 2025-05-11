@@ -224,6 +224,10 @@ npm start
 <a href="https://github.com/The-King-Destroy" style="display:inline-block; margin-right: 10px; text-decoration: none;">
     <img src="https://github.com/The-King-Destroy.png" width="130" height="130" alt="ⁱᵃᵐ|𝔇ĕ𝐬†𝓻⊙γ𒆜" style="border-radius: 50%;"/>
 </a>
+</a>
+<a href="https://github.com/Aqua200" style="display:inline-block; margin-right: 10px; text-decoration: none;">
+    <img src="https://github.com/Aqua200.png" width="130" height="130" alt="Neykoor💜" style="border-radius: 50%;"/>
+</a>
 
 
 <h1 align="center">⚡ EL BOT SE ACTUALIZA SEMANALMENTE ⚡</h1>
