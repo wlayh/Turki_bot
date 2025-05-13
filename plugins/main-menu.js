@@ -40,6 +40,9 @@ let handler = async (m, { conn, args }) => {
 │ 
 │ 🎨 *crearlogo* 
 │    ➟ Ver el menú de logos y efectos
+│ 
+│  📑 Compra tu bot o pide informacion
+│  ➟ *#allbot*
 ╰━━━━━━━━━━━━━━━━━
 
 • :･ﾟ⊹˚• \`『 𝐼𝑛𝑓𝑜-𝐵𝑜𝑡 』\` •˚⊹:･ﾟ•
