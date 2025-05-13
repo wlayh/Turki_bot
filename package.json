@@ -24,7 +24,7 @@
 },
 "repository": {
 "type": "git",
-"url": "githttps://github.com/Fer280809/Asta_bot.git"
+"url": "git+https://github.com/Fer280809/Asta_bot.git"
 },
 "bugs": {
 "url": "https://github.com/Fer280809/Asta_bot.git"
