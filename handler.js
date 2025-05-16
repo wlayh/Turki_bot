@@ -110,8 +110,8 @@ if (!isNumber(user.warn))
 user.warn = 0
 } else
                 global.db.data.users[m.sender] = {
-exp: 0,
-coin: 10,
+exp: 3,
+coin: 50,
 joincount: 1,
 diamond: 3,
 lastadventure: 0,
@@ -155,7 +155,7 @@ chat.sAutoresponder = ''
 if (!('welcome' in chat))
 chat.welcome = true
 if (!('autolevelup' in chat))
-chat.autolevelup = false
+chat.autolevelup = true
 if (!('autoAceptar' in chat))
 chat.autoAceptar = false
 if (!('autosticker' in chat))
@@ -171,7 +171,7 @@ chat.antiBot = false
 if (!('antiBot2' in chat))
 chat.antiBot2 = false
 if (!('modoadmin' in chat))                     
-chat.modoadmin = false   
+chat.modoadmin = true   
 if (!('antiLink' in chat))
 chat.antiLink = true
 if (!('reaction' in chat))
@@ -185,7 +185,7 @@ chat.delete = false
 if (!isNumber(chat.expired))
 chat.expired = 0
 if (!('antiLag' in chat))
-chat.antiLag = false
+chat.antiLag = true
 if (!('per' in chat))
 chat.per = []
 } else
@@ -246,10 +246,33 @@ m.text = ''
 
 let _user = global.db.data && global.db.data.users && global.db.data.users[m.sender]
 
-const isROwner = [conn.decodeJid(global.conn.user.id), ...global.owner.map(([number]) => number)].map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
+// FIX: Make sure global.owner is an array before trying to map it
+if (!Array.isArray(global.owner)) {
+    global.owner = [];
+    console.warn("Warning: global.owner is not properly initialized. Setting to empty array.");
+}
+
+const isROwner = [conn.decodeJid(global.conn.user.id), ...global.owner.map(owner => {
+    // Check if owner is an array (as expected) or handle if it's a string or other format
+    return Array.isArray(owner) ? owner[0] : (typeof owner === 'string' ? owner : '');
+})].map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
+
 const isOwner = isROwner || m.fromMe
+
+// FIX: Make sure global.mods is an array
+if (!Array.isArray(global.mods)) {
+    global.mods = [];
+    console.warn("Warning: global.mods is not properly initialized. Setting to empty array.");
+}
+
+// FIX: Make sure global.prems is an array
+if (!Array.isArray(global.prems)) {
+    global.prems = [];
+    console.warn("Warning: global.prems is not properly initialized. Setting to empty array.");
+}
+
 const isMods = isOwner || global.mods.map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
-const isPrems = isROwner || global.prems.map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender) || _user.premium == true
+const isPrems = isROwner || global.prems.map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender) || (_user && _user.premium == true)
 
 if (opts['queque'] && m.text && !(isMods || isPrems)) {
 let queque = this.msgqueque, time = 1000 * 5
@@ -582,3 +605,4 @@ const users = [...new Set([...global.conns.filter((conn) => conn.user && conn.ws
 for (const userr of users) {
 userr.subreloadHandler(false)
 }}});
+
