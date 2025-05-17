@@ -163,7 +163,7 @@ npm start
 
  * ⭐ Canal Oficial  [`¡ÚNETE AHORA!`](https://whatsapp.com/channel/0029VbAoYE99hXF1wm3zmQ21)
 * 💫 Grupo Oficial [`¡ÚNETE AHORA!`](https://chat.whatsapp.com/JONU3lLJhCf0JgCuL13gwk)
-* 🌟 Comunidad Oficial [`¡ÚNETE AHORA!`](https://chat.whatsapp.com/JONU3lLJhCf0JgCuL13gwk)
+* 🌟 Comunidad Oficial [`¡ÚNETE AHORA!`](https://chat.whatsapp.com/KKwDZn5vDAE6MhZFAcVQeO)
 </details>
 
 <details>
