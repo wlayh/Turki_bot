@@ -45,6 +45,11 @@ let handler = async (m, { conn, args }) => {
 │  ➟ *#allbot*
 ╰━━━━━━━━━━━━━━━━━
 
+
+
+ve si el bot que usas es el oficial velo con #oficial o #botoficial
+
+
 • :･ﾟ⊹˚• \`『 𝐼𝑛𝑓𝑜-𝐵𝑜𝑡 』\` •˚⊹:･ﾟ•
 
 ❍ 𝐶𝑜𝑚𝑎𝑛𝑑𝑜𝑠 𝑝𝑎𝑟𝑎 𝑣𝑒𝑟 𝑒𝑠𝑡𝑎𝑑𝑜 𝑒 𝑖𝑛𝑓𝑜𝑟𝑚𝑎𝑐𝑖𝑜𝑛 𝑑𝑒 𝑙𝑎 𝐵𝑜𝑡.
