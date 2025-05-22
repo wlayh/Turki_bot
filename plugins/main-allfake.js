@@ -54,10 +54,10 @@ global.done = '✅'
 global.error = '✖️'
 global.msm = '⚠︎'
 
-global.emoji = '❀'
-global.emoji2 = '✧'
-global.emoji3 = '✦'
-global.emoji4 = '❍'
+global.emoji = '𓂀'
+global.emoji2 = '☿'
+global.emoji3 = '𓂀'
+global.emoji4 = '☤ '
 global.emoji5 = '✰'
 global.emojis = [emoji, emoji2, emoji3, emoji4].getRandom()
 
@@ -77,12 +77,12 @@ let category = "imagen"
 const db = 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgwEyPc2ZcSJLv1nKjMoNcqTD_PZl1Zk9ujraVrJSEw_efKhnurC6XGA6VOj73W-ygzfgfou1-g_3EzCX41BCiLXPvTjcIUy4BL78F9l9MuQlWAIg4E3DjO-Kx-qO-yIIhkOyeYaqDeyx8MW4EusFhzDUqID_Pk2RRUWhDfHErCquK71DBo9v4BhRjtXBNt/w536-h536/b63bb3b9-7464-494f-937f-9aa4394cb124.jpg'
 try {
   const response = await fetch(db);
-  const text = await response.text();
-  const db_ = JSON.parse(text);
-  const random = Math.floor(Math.random() * db_.links[category].length);
-  const randomlink = db_.links[category][random];
-  const response2 = await fetch(randomlink);
-  const rimg = await response2.buffer();
+  //  const text = await response.text();  // Remove this line
+  //  const db_ = JSON.parse(text);       // Remove this line
+  //  const random = Math.floor(Math.random() * db_.links[category].length); // Remove this line
+  //  const randomlink = db_.links[category][random]; // Remove this line
+  //  const response2 = await fetch(randomlink); // Remove this line
+  const rimg = await response.buffer();
   global.icons = rimg;
 } catch (error) {
   console.error("Error al obtener o procesar la imagen:", error);
@@ -123,5 +123,6 @@ let id = canalIdM[randomIndex]
 let name = canalNombreM[randomIndex]
 return { id, name }
 }
+
 
 
