@@ -11,8 +11,8 @@ let handler = async (m, { conn }) => {
         } else {
             msg += `🔴 Libre`
         }
-        if (isla.forSale) msg += ` | 🏷️ En venta por ${isla.price} minerales`
-        msg += '\n'
+        if (isla.forSale) msg += ` | 🏷️ En venta por ${isla.price} monedas/minerales`
+        msg += `\nRecursos: Hierro: ${isla.iron} | Oro: ${isla.gold} | Esmeralda: ${isla.emerald} | Carbón: ${isla.coal} | Piedra: ${isla.stone}\n`
     }
     m.reply(msg)
 }
