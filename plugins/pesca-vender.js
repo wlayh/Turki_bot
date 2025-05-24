@@ -1,148 +1,341 @@
-let handler = async (m, { conn, text, command, usedPrefix }) => {
-    let users = global.db.data.users
-    let senderId = m.sender
-    
-    // Inicializar inventario si no existe
-    if (!users[senderId].fish) users[senderId].fish = {}
-    
-    let fishPrices = {
-      "Sardina": { price: [5, 8], emoji: "🐟" },
-      "Trucha": { price: [8, 12], emoji: "🐠" },
-      "Salmón": { price: [15, 20], emoji: "🍣" },
-      "Atún": { price: [18, 25], emoji: "🐟" },
-      "Pez Espada": { price: [30, 40], emoji: "🗡️" },
-      "Tiburón": { price: [50, 70], emoji: "🦈" },
-      "Pulpo Gigante": { price: [80, 120], emoji: "🐙" },
-      "Ballena": { price: [150, 200], emoji: "🐋" }
-    }
-    
-    let args = text.trim().split(' ')
-    let fishName = args[0]
-    let quantity = parseInt(args[1]) || 1
-    
-    // Si no especifica qué vender, mostrar inventario
-    if (!fishName) {
-      let inventory = Object.keys(users[senderId].fish).filter(fish => users[senderId].fish[fish] > 0)
+// SISTEMA DE VENTA PARA PESCA
+let sellHandler = async (m, { conn, text, usedPrefix }) => {
+  let users = global.db.data.users
+  let senderId = m.sender
+  
+  // Inicializar inventarios si no existen
+  if (!users[senderId].fish) users[senderId].fish = {}
+  if (!users[senderId].treasures) users[senderId].treasures = {}
+  if (!users[senderId].junk) users[senderId].junk = {}
+  
+  // Precios de los peces
+  let fishPrices = {
+      "Sardina": 5,
+      "Trucha": 8,
+      "Salmón": 15,
+      "Atún": 20,
+      "Pez Espada": 35,
+      "Pez Dorado": 50,
+      "Tiburón": 80,
+      "Pez Dragón": 120,
+      "Pulpo Gigante": 200,
+      "Ballena": 350,
+      "Kraken": 500
+  }
+  
+  // Precios de los tesoros
+  let treasurePrices = {
+      "Concha Marina": 10,
+      "Perla": 25,
+      "Collar de Algas": 30,
+      "Moneda Antigua": 40,
+      "Anillo Dorado": 60,
+      "Brújula Mágica": 100,
+      "Espada del Mar": 150,
+      "Corona de Tritón": 300,
+      "Cofre del Tesoro": 250,
+      "Tridente de Poseidón": 500,
+      "Cofre Mítico": 800
+  }
+  
+  let args = text.trim().split(' ')
+  let action = args[0]?.toLowerCase()
+  
+  // Si no hay argumentos, mostrar menú
+  if (!action) {
+      let fishInventory = Object.keys(users[senderId].fish).filter(fish => users[senderId].fish[fish] > 0)
+      let treasureInventory = Object.keys(users[senderId].treasures).filter(treasure => users[senderId].treasures[treasure] > 0)
       
-      if (inventory.length === 0) {
-        m.reply(`🎣 *INVENTARIO VACÍO* 📦
-    
-    🐟 No tienes peces para vender
-    💡 Usa *${usedPrefix}pescar* para conseguir peces
-    
-    💰 Precios de venta:
-    ${Object.entries(fishPrices).map(([fish, data]) => 
-      `${data.emoji} ${fish}: ${data.price[0]}-${data.price[1]} ${moneda}`
-    ).join('\n')}`)
-        return
-      }
-    
-      let inventoryText = inventory.map(fish => 
-        `${fishPrices[fish]?.emoji || '🐟'} ${fish}: *${users[senderId].fish[fish]}* (${fishPrices[fish]?.price[0] || 5}-${fishPrices[fish]?.price[1] || 10} ${moneda} c/u)`
-      ).join('\n')
-    
-      m.reply(`🎣 *TU INVENTARIO* 📦
-    
-    ${inventoryText}
-    
-    💡 Uso: *${usedPrefix + command} <pez> [cantidad]*
-    📝 Ejemplo: *${usedPrefix + command} Sardina 5*
-    💰 Para vender todo: *${usedPrefix + command} todo*`)
-      return
-    }
-    
-    // Vender todo el inventario
-    if (fishName.toLowerCase() === 'todo') {
-      let totalValue = 0
-      let soldItems = []
-      
-      for (let fish in users[senderId].fish) {
-        if (users[senderId].fish[fish] > 0 && fishPrices[fish]) {
-          let qty = users[senderId].fish[fish]
-          let minPrice = fishPrices[fish].price[0]
-          let maxPrice = fishPrices[fish].price[1]
-          let pricePerFish = Math.floor(Math.random() * (maxPrice - minPrice + 1)) + minPrice
-          let fishValue = qty * pricePerFish
+      if (fishInventory.length === 0 && treasureInventory.length === 0) {
+          m.reply(`🏪 *TIENDA DE PESCA* 🏪
           
-          totalValue += fishValue
-          soldItems.push(`${fishPrices[fish].emoji} ${fish}: ${qty}x = ${fishValue} ${moneda}`)
-          users[senderId].fish[fish] = 0
-        }
+📦 No tienes nada para vender
+🎣 Ve a pescar primero con *${usedPrefix}pescar*`)
+          return
       }
       
-      if (totalValue === 0) {
-        m.reply(`📦 *¡NO HAY NADA QUE VENDER!* 📦
-    🐟 Tu inventario está vacío`)
-        return
+      let message = `🏪 *TIENDA DE PESCA* 💰
+
+📋 *Comandos disponibles:*
+• *${usedPrefix}vender todo* - Vender todo
+• *${usedPrefix}vender peces* - Vender todos los peces
+• *${usedPrefix}vender tesoros* - Vender todos los tesoros
+• *${usedPrefix}vender <item>* - Vender item específico
+• *${usedPrefix}vender precios* - Ver tabla de precios
+
+💡 *Ejemplo:* ${usedPrefix}vender Salmón`
+      
+      // Mostrar inventario vendible con precios
+      if (fishInventory.length > 0) {
+          message += `\n\n🐟 *PECES DISPONIBLES:*\n`
+          fishInventory.forEach(fish => {
+              let quantity = users[senderId].fish[fish]
+              let price = fishPrices[fish] || 1
+              let total = quantity * price
+              message += `• ${fish}: ${quantity}x (${price} c/u = ${total} ${moneda})\n`
+          })
       }
       
-      users[senderId].coin += totalValue
+      if (treasureInventory.length > 0) {
+          message += `\n✨ *TESOROS DISPONIBLES:*\n`
+          treasureInventory.forEach(treasure => {
+              let quantity = users[senderId].treasures[treasure]
+              let price = treasurePrices[treasure] || 1
+              let total = quantity * price
+              message += `• ${treasure}: ${quantity}x (${price} c/u = ${total} ${moneda})\n`
+          })
+      }
       
-      conn.reply(m.chat, `💰 *¡VENTA MASIVA REALIZADA!* 🤑
-    
-    📋 *Resumen de venta:*
-    ${soldItems.join('\n')}
-    
-    💸 *Total ganado: ${totalValue} ${moneda}*
-    💳 *Balance actual: ${users[senderId].coin} ${moneda}*`, m)
+      conn.reply(m.chat, message, m)
+      return
+  }
+  
+  // Mostrar tabla de precios
+  if (action === 'precios' || action === 'precio') {
+      let message = `💰 *TABLA DE PRECIOS* 💰
+
+🐟 *PECES:*
+${Object.entries(fishPrices).map(([fish, price]) => 
+  `• ${fish}: ${price} ${moneda}`
+).join('\n')}
+
+✨ *TESOROS:*
+${Object.entries(treasurePrices).map(([treasure, price]) => 
+  `• ${treasure}: ${price} ${moneda}`
+).join('\n')}
+
+💡 Los precios pueden variar según la rareza`
       
-      global.db.write()
+      conn.reply(m.chat, message, m)
       return
-    }
-    
-    // Vender pez específico
-    if (!fishPrices[fishName]) {
-      m.reply(`🐟 *PEZ NO VÁLIDO* ❌
-    
-    💡 Peces disponibles:
-    ${Object.keys(fishPrices).join(', ')}
-    
-    📝 Usa: *${usedPrefix + command}* para ver tu inventario`)
+  }
+  
+  let totalEarned = 0
+  let soldItems = []
+  
+  if (action === 'todo' || action === 'all') {
+      // Vender todo
+      // Vender peces
+      for (let fish of Object.keys(users[senderId].fish)) {
+          if (users[senderId].fish[fish] > 0) {
+              let quantity = users[senderId].fish[fish]
+              let price = fishPrices[fish] || 1
+              let earnings = quantity * price
+              totalEarned += earnings
+              soldItems.push(`🐟 ${fish}: ${quantity}x = ${earnings} ${moneda}`)
+              users[senderId].fish[fish] = 0
+          }
+      }
+      
+      // Vender tesoros (excepto cofres)
+      for (let treasure of Object.keys(users[senderId].treasures)) {
+          if (users[senderId].treasures[treasure] > 0 && !treasure.includes("Cofre")) {
+              let quantity = users[senderId].treasures[treasure]
+              let price = treasurePrices[treasure] || 1
+              let earnings = quantity * price
+              totalEarned += earnings
+              soldItems.push(`✨ ${treasure}: ${quantity}x = ${earnings} ${moneda}`)
+              users[senderId].treasures[treasure] = 0
+          }
+      }
+      
+  } else if (action === 'peces' || action === 'fish') {
+      // Vender solo peces
+      for (let fish of Object.keys(users[senderId].fish)) {
+          if (users[senderId].fish[fish] > 0) {
+              let quantity = users[senderId].fish[fish]
+              let price = fishPrices[fish] || 1
+              let earnings = quantity * price
+              totalEarned += earnings
+              soldItems.push(`🐟 ${fish}: ${quantity}x = ${earnings} ${moneda}`)
+              users[senderId].fish[fish] = 0
+          }
+      }
+      
+  } else if (action === 'tesoros' || action === 'treasures') {
+      // Vender solo tesoros (excepto cofres)
+      for (let treasure of Object.keys(users[senderId].treasures)) {
+          if (users[senderId].treasures[treasure] > 0 && !treasure.includes("Cofre")) {
+              let quantity = users[senderId].treasures[treasure]
+              let price = treasurePrices[treasure] || 1
+              let earnings = quantity * price
+              totalEarned += earnings
+              soldItems.push(`✨ ${treasure}: ${quantity}x = ${earnings} ${moneda}`)
+              users[senderId].treasures[treasure] = 0
+          }
+      }
+      
+  } else {
+      // Vender item específico
+      let itemName = text.trim()
+      let found = false
+      
+      // Buscar en peces
+      if (users[senderId].fish[itemName] && users[senderId].fish[itemName] > 0) {
+          let quantity = users[senderId].fish[itemName]
+          let price = fishPrices[itemName] || 1
+          let earnings = quantity * price
+          totalEarned = earnings
+          soldItems.push(`🐟 ${itemName}: ${quantity}x = ${earnings} ${moneda}`)
+          users[senderId].fish[itemName] = 0
+          found = true
+      }
+      
+      // Buscar en tesoros
+      if (!found && users[senderId].treasures[itemName] && users[senderId].treasures[itemName] > 0) {
+          // No permitir vender cofres directamente
+          if (itemName.includes("Cofre")) {
+              m.reply(`🚫 *NO PUEDES VENDER COFRES* 🚫
+              
+🗝️ Los cofres deben ser abiertos, no vendidos
+💡 Usa *${usedPrefix}abrir ${itemName}* para abrirlo`)
+              return
+          }
+          
+          let quantity = users[senderId].treasures[itemName]
+          let price = treasurePrices[itemName] || 1
+          let earnings = quantity * price
+          totalEarned = earnings
+          soldItems.push(`✨ ${itemName}: ${quantity}x = ${earnings} ${moneda}`)
+          users[senderId].treasures[itemName] = 0
+          found = true
+      }
+      
+      if (!found) {
+          m.reply(`❌ *ITEM NO ENCONTRADO* ❌
+          
+📦 No tienes "${itemName}" en tu inventario
+💡 Usa *${usedPrefix}vender* para ver qué puedes vender`)
+          return
+      }
+  }
+  
+  if (soldItems.length === 0) {
+      m.reply(`📦 *NADA PARA VENDER* 📦
+      
+🎣 No tienes elementos vendibles
+💡 Los cofres no se pueden vender, deben abrirse`)
       return
-    }
-    
-    let availableQuantity = users[senderId].fish[fishName] || 0
-    if (availableQuantity === 0) {
-      m.reply(`📦 *¡NO TIENES ESE PEZ!* 📦
-    
-    ${fishPrices[fishName].emoji} No tienes *${fishName}* en tu inventario
-    🎣 Ve a pescar primero con *${usedPrefix}pescar*`)
-      return
-    }
-    
-    if (quantity > availableQuantity) {
-      m.reply(`📦 *¡CANTIDAD INSUFICIENTE!* 📦
-    
-    ${fishPrices[fishName].emoji} Tienes: *${availableQuantity}* ${fishName}
-    ❌ Quieres vender: *${quantity}*`)
-      return
-    }
-    
-    // Calcular precio aleatorio dentro del rango
-    let minPrice = fishPrices[fishName].price[0]
-    let maxPrice = fishPrices[fishName].price[1]
-    let pricePerFish = Math.floor(Math.random() * (maxPrice - minPrice + 1)) + minPrice
-    let totalValue = quantity * pricePerFish
-    
-    // Realizar venta
-    users[senderId].fish[fishName] -= quantity
-    users[senderId].coin += totalValue
-    
-    conn.reply(m.chat, `💰 *¡VENTA REALIZADA!* 🤑
-    
-    ${fishPrices[fishName].emoji} Vendiste: *${quantity}x ${fishName}*
-    💵 Precio unitario: *${pricePerFish} ${moneda}*
-    💸 Total ganado: *${totalValue} ${moneda}*
-    📦 Te quedan: *${users[senderId].fish[fishName]} ${fishName}*
-    💳 Balance: *${users[senderId].coin} ${moneda}*`, m)
-    
-    global.db.write()
-    }
-    
-    handler.tags = ['economy']
-    handler.help = ['vender']
-    handler.command = ['vender', 'sell', 'venta']
-    handler.register = true
-    handler.group = true
-    
-    export default handler
+  }
+  
+  // Agregar monedas ganadas
+  users[senderId].coin = (users[senderId].coin || 0) + totalEarned
+  
+  // Bonus por vender mucho
+  let bonus = 0
+  if (soldItems.length >= 5) {
+      bonus = Math.floor(totalEarned * 0.1) // 10% bonus
+      users[senderId].coin += bonus
+  }
+  
+  let message = `🏪 *¡VENTA EXITOSA!* 💰
+
+📋 *Elementos vendidos:*
+${soldItems.join('\n')}
+
+💰 *Total ganado: ${totalEarned} ${moneda}*`
+
+  if (bonus > 0) {
+      message += `\n🎉 *Bonus por venta masiva: ${bonus} ${moneda}*`
+  }
+  
+  message += `\n💳 *Balance actual: ${users[senderId].coin} ${moneda}*`
+  
+  // Mensajes especiales según cantidad vendida
+  if (totalEarned >= 1000) {
+      message += `\n\n🌟 *¡Venta millonaria! Eres un maestro pescador!* 🎣`
+  } else if (totalEarned >= 500) {
+      message += `\n\n⭐ *¡Excelente venta! Tu negocio va muy bien!* 📈`
+  } else if (totalEarned >= 100) {
+      message += `\n\n✨ *¡Buena venta! Sigue así!* 👍`
+  }
+  
+  conn.reply(m.chat, message, m)
+  global.db.write()
+}
+
+// COMANDO PARA VER VALOR DEL INVENTARIO
+let valueHandler = async (m, { conn, usedPrefix }) => {
+  let users = global.db.data.users
+  let senderId = m.sender
+  
+  if (!users[senderId].fish) users[senderId].fish = {}
+  if (!users[senderId].treasures) users[senderId].treasures = {}
+  
+  let fishPrices = {
+      "Sardina": 5, "Trucha": 8, "Salmón": 15, "Atún": 20,
+      "Pez Espada": 35, "Pez Dorado": 50, "Tiburón": 80,
+      "Pez Dragón": 120, "Pulpo Gigante": 200, "Ballena": 350, "Kraken": 500
+  }
+  
+  let treasurePrices = {
+      "Concha Marina": 10, "Perla": 25, "Collar de Algas": 30,
+      "Moneda Antigua": 40, "Anillo Dorado": 60, "Brújula Mágica": 100,
+      "Espada del Mar": 150, "Corona de Tritón": 300, "Cofre del Tesoro": 250,
+      "Tridente de Poseidón": 500, "Cofre Mítico": 800
+  }
+  
+  let fishValue = 0
+  let treasureValue = 0
+  
+  // Calcular valor de peces
+  for (let fish of Object.keys(users[senderId].fish)) {
+      if (users[senderId].fish[fish] > 0) {
+          fishValue += users[senderId].fish[fish] * (fishPrices[fish] || 1)
+      }
+  }
+  
+  // Calcular valor de tesoros (excepto cofres)
+  for (let treasure of Object.keys(users[senderId].treasures)) {
+      if (users[senderId].treasures[treasure] > 0 && !treasure.includes("Cofre")) {
+          treasureValue += users[senderId].treasures[treasure] * (treasurePrices[treasure] || 1)
+      }
+  }
+  
+  let totalValue = fishValue + treasureValue
+  let currentCoins = users[senderId].coin || 0
+  let netWorth = totalValue + currentCoins
+  
+  let message = `💎 *VALORACIÓN DE INVENTARIO* 💎
+
+🐟 *Valor de peces:* ${fishValue} ${moneda}
+✨ *Valor de tesoros:* ${treasureValue} ${moneda}
+💰 *Monedas actuales:* ${currentCoins} ${moneda}
+
+📊 *VALOR TOTAL VENDIBLE:* ${totalValue} ${moneda}
+🏆 *PATRIMONIO TOTAL:* ${netWorth} ${moneda}
+
+💡 Usa *${usedPrefix}vender* para convertir en monedas`
+
+  // Clasificación por riqueza
+  if (netWorth >= 5000) {
+      message += `\n\n👑 *¡MAGNATE PESQUERO!* - Eres increíblemente rico`
+  } else if (netWorth >= 2000) {
+      message += `\n\n💎 *COMERCIANTE PRÓSPERO* - Tienes una gran fortuna`
+  } else if (netWorth >= 1000) {
+      message += `\n\n⭐ *PESCADOR EXITOSO* - Tu negocio va muy bien`
+  } else if (netWorth >= 500) {
+      message += `\n\n🎣 *PESCADOR COMPETENTE* - Vas por buen camino`
+  } else {
+      message += `\n\n🌱 *PESCADOR NOVATO* - ¡Sigue pescando para crecer!`
+  }
+      
+  conn.reply(m.chat, message, m)
+}
+
+// Handler para vender
+let sellHandlerExport = sellHandler
+sellHandlerExport.tags = ['economy']
+sellHandlerExport.help = ['vender']
+sellHandlerExport.command = ['vender', 'sell', 'venta']
+sellHandlerExport.register = true
+
+// Handler para valorar
+let valueHandlerExport = valueHandler
+valueHandlerExport.tags = ['economy']  
+valueHandlerExport.help = ['valorar']
+valueHandlerExport.command = ['valorar', 'valor', 'value', 'patrimonio']
+valueHandlerExport.register = true
+
+export { sellHandlerExport as vender }
+export { valueHandlerExport as valorar }
