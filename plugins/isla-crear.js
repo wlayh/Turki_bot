@@ -1,15 +1,17 @@
+import { ensureIslands } from './islas-utils.js'
+
 let handler = async (m, { conn, text, usedPrefix, isOwner }) => {
     if (!isOwner) return m.reply('Solo los dueños (Owners) pueden crear islas personalizadas.');
 
-    let islands = global.db.data.islands || {};
+    let islands = ensureIslands();
     let args = text.trim().split('|').map(v => v.trim());
-    // Uso: .islacrear <nombre> | <valor/personas> | <minerales> | <recursos extra>
-    // Ejemplo: .islacrear IslaMisteriosa | 10 | 500 | oro, diamantes
+    // Uso: .islacrear <nombre> | <personas> | <hierro> | <oro> | <esmeralda> | <carbón> | <piedra> | <recursos extra>
+    // Ejemplo: .islacrear IslaMisteriosa | 10 | 120 | 80 | 10 | 200 | 600 | oro, diamantes
 
-    if (args.length < 3) {
+    if (args.length < 7) {
         return m.reply(
-            `Uso: ${usedPrefix}islacrear <nombre> | <personas> | <minerales> | <recursos extra (opcional)>\n` +
-            `Ejemplo: ${usedPrefix}islacrear IslaMisteriosa | 10 | 500 | oro, diamantes`
+            `Uso: ${usedPrefix}islacrear <nombre> | <personas> | <hierro> | <oro> | <esmeralda> | <carbón> | <piedra> | <recursos extra (opcional)>\n` +
+            `Ejemplo: ${usedPrefix}islacrear IslaMisteriosa | 10 | 120 | 80 | 10 | 200 | 600 | oro, diamantes`
         );
     }
 
@@ -17,20 +19,29 @@ let handler = async (m, { conn, text, usedPrefix, isOwner }) => {
     let nextId = 1;
     while (islands[nextId]) nextId++;
 
-    let [nombre, personas, minerales, recursos] = args;
+    let [nombre, personas, iron, gold, emerald, coal, stone, recursos] = args;
     personas = parseInt(personas);
-    minerales = parseInt(minerales);
+    iron = parseInt(iron);
+    gold = parseInt(gold);
+    emerald = parseInt(emerald);
+    coal = parseInt(coal);
+    stone = parseInt(stone);
 
     if (!nombre) return m.reply('Debes especificar un nombre para la isla.');
-    if (isNaN(personas) || personas < 0) return m.reply('Personas debe ser un número válido.');
-    if (isNaN(minerales) || minerales < 0) return m.reply('Minerales debe ser un número válido.');
+    if ([personas, iron, gold, emerald, coal, stone].some(x => isNaN(x) || x < 0))
+        return m.reply('Todos los valores de personas y minerales deben ser números válidos.');
 
     let recursosList = recursos ? recursos.split(',').map(v => v.trim()) : [];
 
     islands[nextId] = {
         owner: null,
         name: nombre,
-        minerals: minerales,
+        minerals: iron + gold + emerald + coal + stone,
+        iron,
+        gold,
+        emerald,
+        coal,
+        stone,
         people: personas,
         forSale: false,
         price: 0,
@@ -47,13 +58,17 @@ let handler = async (m, { conn, text, usedPrefix, isOwner }) => {
         `ID: ${nextId}\n` +
         `Nombre: ${nombre}\n` +
         `Personas: ${personas}\n` +
-        `Minerales: ${minerales}\n` +
+        `Hierro: ${iron}\n` +
+        `Oro: ${gold}\n` +
+        `Esmeralda: ${emerald}\n` +
+        `Carbón: ${coal}\n` +
+        `Piedra: ${stone}\n` +
         `Recursos extra: ${recursosList.length > 0 ? recursosList.join(', ') : 'Ninguno'}`
     );
 };
 handler.tags = ['isla', 'owner'];
-handler.help = ['islacrear <nombre> | <personas> | <minerales> | <recursos (opcional)>'];
+handler.help = ['islacrear <nombre> | <personas> | <hierro> | <oro> | <esmeralda> | <carbón> | <piedra> | <recursos (opcional)>'];
 handler.command = ['islacrear'];
 handler.group = false;
-handler.rowner = true; // Solo root/owner puede usarlo
+handler.rowner = true;
 export default handler;
