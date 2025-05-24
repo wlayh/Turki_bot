@@ -1,5 +1,7 @@
+import { ensureIslands } from './islas-utils.js'
+
 let handler = async (m, { conn, text, usedPrefix }) => {
-    let islands = global.db.data.islands || {}
+    let islands = ensureIslands()
     let clans = global.db.data.clans || {}
     let senderId = m.sender
     let myClan = Object.keys(clans).find(c => clans[c].members.includes(senderId))
@@ -16,7 +18,11 @@ let handler = async (m, { conn, text, usedPrefix }) => {
     islands[num].price = 0
     global.db.data.islands = islands
     global.db.data.clans = clans
-    m.reply(`¡Compraste la isla ${num} para tu clan!`)
+    m.reply(
+        `¡Compraste la isla ${num} para tu clan!\n` +
+        `Minerales de la isla:\n` +
+        `Hierro: ${islands[num].iron} | Oro: ${islands[num].gold} | Esmeralda: ${islands[num].emerald} | Carbón: ${islands[num].coal} | Piedra: ${islands[num].stone}`
+    )
 }
 handler.tags = ['isla']
 handler.help = ['islacomprarventa <id_isla>']
