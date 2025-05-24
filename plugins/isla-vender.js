@@ -1,5 +1,7 @@
+import { ensureIslands } from './islas-utils.js'
+
 let handler = async (m, { conn, text, usedPrefix }) => {
-    let islands = global.db.data.islands || {}
+    let islands = ensureIslands()
     let clans = global.db.data.clans || {}
     let senderId = m.sender
     let [num, price] = text.trim().split(/ +/)
@@ -13,7 +15,7 @@ let handler = async (m, { conn, text, usedPrefix }) => {
     islands[num].forSale = true
     islands[num].price = price
     global.db.data.islands = islands
-    m.reply(`Pusiste la isla ${num} en venta por ${price} minerales.`)
+    m.reply(`Pusiste la isla ${num} en venta por ${price} monedas/minerales.`)
 }
 handler.tags = ['isla']
 handler.help = ['islavender <id_isla> <precio>']
