@@ -1,108 +1,175 @@
-const handler = async (m, {conn}) => {
-  const user = global.db.data.users[m.sender];
-  const randomaku1 = `${Math.floor(Math.random() * 5)}`;
-  const randomaku2 = `${Math.floor(Math.random() * 5)}`;
-  const randomaku4 = `${Math.floor(Math.random() * 5)}`;
-  const randomaku3 = `${Math.floor(Math.random() * 5)}`;
-  const randomaku5 = `${Math.floor(Math.random() * 5)}`;
-  const randomaku6 = `${Math.floor(Math.random() * 5)}`;
-  const randomaku7 = `${Math.floor(Math.random() * 5)}`;
-  const randomaku8 = `${Math.floor(Math.random() * 5)}`;
-  const randomaku9 = `${Math.floor(Math.random() * 5)}`;
-  const randomaku10 = `${Math.floor(Math.random() * 5)}`;
-  const randomaku11 = `${Math.floor(Math.random() * 5)}`;
-  const randomaku12 = `${Math.floor(Math.random() * 5)}`.trim();
-  const rbrb1 = (randomaku1 * 1);
-  const rbrb2 = (randomaku2 * 1);
-  const rbrb3 = (randomaku3 * 1);
-  const rbrb4 = (randomaku4 * 1);
-  const rbrb5 = (randomaku5 * 1);
-  const rbrb6 = (randomaku6 * 1);
-  const rbrb7 = (randomaku7 * 1);
-  const rbrb8 = (randomaku8 * 1);
-  const rbrb9 = (randomaku9 * 1);
-  const rbrb10 = (randomaku10 * 1);
-  const rbrb11 = (randomaku11 * 1);
-  const rbrb12 = (randomaku12 * 1);
-  const anti1 = `${rbrb1}`;
-  const anti2 = `${rbrb2}`;
-  const anti3 = `${rbrb3}`;
-  const anti4 = `${rbrb4}`;
-  const anti5 = `${rbrb5}`;
-  const anti6 = `${rbrb6}`;
-  const anti7 = `${rbrb7}`;
-  const anti8 = `${rbrb8}`;
-  const anti9 = `${rbrb9}`;
-  const anti10 = `${rbrb10}`;
-  const anti11 = `${rbrb11}`;
-  const anti12 = `${rbrb12}`;
-  const ar1 = `${['🪚', '⛏️', '🧨', '💣', '🔫', '🔪', '🗡️', '🏹', '🦾', '🥊', '🧹', '🔨', '🛻'].getRandom()}`;
-  const ar2 = `${['🪚', '⛏️', '🧨', '💣', '🔫', '🔪', '🗡️', '🏹', '🦾', '🥊', '🧹', '🔨', '🛻'].getRandom()}`;
-  const ar3 = `${['🪚', '⛏️', '🧨', '💣', '🔫', '🔪', '🗡️', '🏹', '🦾', '🥊', '🧹', '🔨', '🛻'].getRandom()}`;
-  const ar4 = `${['🪚', '⛏️', '🧨', '💣', '🔫', '🔪', '🗡️', '🏹', '🦾', '🥊', '🧹', '🔨', '🛻'].getRandom()}`;
-  const ar5 = `${['🪚', '⛏️', '🧨', '💣', '🔫', '🔪', '🗡️', '🏹', '🦾', '🥊', '🧹', '🔨', '🛻'].getRandom()}`;
-  const ar6 = `${['🪚', '⛏️', '🧨', '💣', '🔫', '🔪', '🗡️', '🏹', '🦾', '🥊', '🧹', '🔨', '🛻'].getRandom()}`;
-  const ar7 = `${['🪚', '⛏️', '🧨', '💣', '🔫', '🔪', '🗡️', '🏹', '🦾', '🥊', '🧹', '🔨', '🛻'].getRandom()}`;
-  const ar8 = `${['🪚', '⛏️', '🧨', '💣', '🔫', '🔪', '🗡️', '🏹', '🦾', '🥊', '🧹', '🔨', '🛻'].getRandom()}`;
-  const ar9 = `${['🪚', '⛏️', '🧨', '💣', '🔫', '🔪', '🗡️', '🏹', '🦾', '🥊', '🧹', '🔨', '🛻'].getRandom()}`;
-  const ar10 = `${['🪚', '⛏️', '🧨', '💣', '🔫', '🔪', '🗡️', '🏹', '🦾', '🥊', '🧹', '🔨', '🛻'].getRandom()}`;
-  const ar11 = `${['🪚', '⛏️', '🧨', '💣', '🔫', '🔪', '🗡️', '🏹', '🦾', '🥊', '🧹', '🔨', '🛻'].getRandom()}`;
-  const ar12 = `${['🪚', '⛏️', '🧨', '💣', '🔫', '🔪', '🗡️', '🏹', '🦾', '🥊', '🧹', '🔨', '🛻'].getRandom()}`;
-  const hsl = `
-*✧ Resultados de la caza ${conn.getName(m.sender)} ✧*
+let cooldowns = {}
 
- *🐂 ${ar1} ${anti1}*			 *🐃 ${ar7} ${anti7}*
- *🐅 ${ar2} ${anti2}*			 *🐮 ${ar8} ${anti8}*
- *🐘 ${ar3} ${anti3}*			 *🐒 ${ar9} ${anti9}*
- *🐐 ${ar4} ${anti4}*			 *🐗 ${ar10} ${anti10}*
- *🐼 ${ar5} ${anti5}*			 *🐖 ${ar11} ${anti11}*
- *🐊 ${ar6} ${anti6}*		    *🐓 ${ar12} ${anti12}*`.trim();
-  global.db.data.users[m.sender].banteng += rbrb1;
-  global.db.data.users[m.sender].harimau += rbrb2;
-  global.db.data.users[m.sender].gajah += rbrb3;
-  global.db.data.users[m.sender].kambing += rbrb4;
-  global.db.data.users[m.sender].panda += rbrb5;
-  global.db.data.users[m.sender].buaya += rbrb6;
-  global.db.data.users[m.sender].kerbau += rbrb7;
-  global.db.data.users[m.sender].sapi += rbrb8;
-  global.db.data.users[m.sender].monyet += rbrb9;
-  global.db.data.users[m.sender].babihutan += rbrb10;
-  global.db.data.users[m.sender].babi += rbrb11;
-  global.db.data.users[m.sender].ayam += rbrb12;
+let handler = async (m, { conn, text, command, usedPrefix }) => {
+let users = global.db.data.users
+let senderId = m.sender
+let senderName = conn.getName(senderId)
 
-  const time = global.db.data.users[m.sender].lastberburu + 2700000; // 45 Minutos
-  if (new Date - global.db.data.users[m.sender].lastberburu < 2700000) return conn.reply(m.chat, `Por favor descansá un momento para seguir cazando\n\n⫹⫺ Tiempo ${clockString(time - new Date())}\n${wm}`, m);
+// Inicializar inventarios si no existen
+if (!users[senderId].animals) users[senderId].animals = {}
+if (!users[senderId].trophies) users[senderId].trophies = {}
+if (!users[senderId].huntJunk) users[senderId].huntJunk = {}
 
+let tiempo = 5 * 60 // 5 minutos
+if (cooldowns[m.sender] && Date.now() - cooldowns[m.sender] < tiempo * 1000) {
+  let tiempo2 = segundosAHMS(Math.ceil((cooldowns[m.sender] + tiempo * 1000 - Date.now()) / 1000))
+  m.reply(`🏹 *¡RIFLE EN DESCANSO!* 🏹
+🕒 Espera *${tiempo2}* para cazar de nuevo
+🌲 Los animales se escondieron 🦌`)
+  return
+}
+
+cooldowns[m.sender] = Date.now()
+
+// ANIMALES
+let animals = [
+  { name: "Conejo", emoji: "🐰", chance: 0.25, rarity: "Común", type: "animal" },
+  { name: "Ardilla", emoji: "🐿️", chance: 0.20, rarity: "Común", type: "animal" },
+  { name: "Pato", emoji: "🦆", chance: 0.18, rarity: "Común", type: "animal" },
+  { name: "Ciervo", emoji: "🦌", chance: 0.15, rarity: "Poco Común", type: "animal" },
+  { name: "Jabalí", emoji: "🐗", chance: 0.12, rarity: "Poco Común", type: "animal" },
+  { name: "Lobo", emoji: "🐺", chance: 0.08, rarity: "Raro", type: "animal" },
+  { name: "Oso", emoji: "🐻", chance: 0.06, rarity: "Raro", type: "animal" },
+  { name: "Águila", emoji: "🦅", chance: 0.04, rarity: "Épico", type: "animal" },
+  { name: "León", emoji: "🦁", chance: 0.025, rarity: "Épico", type: "animal" },
+  { name: "Tigre", emoji: "🐅", chance: 0.015, rarity: "Legendario", type: "animal" },
+  { name: "Dragón", emoji: "🐲", chance: 0.008, rarity: "Mítico", type: "animal" },
+  { name: "Fénix", emoji: "🔥", chance: 0.003, rarity: "Mítico", type: "animal" }
+]
+
+// BASURA/OBJETOS INÚTILES
+let junkItems = [
+  { name: "Rama Rota", emoji: "🪵", chance: 0.08, rarity: "Basura", type: "junk" },
+  { name: "Piedra Común", emoji: "🪨", chance: 0.07, rarity: "Basura", type: "junk" },
+  { name: "Hoja Seca", emoji: "🍂", chance: 0.06, rarity: "Basura", type: "junk" },
+  { name: "Barro", emoji: "🟤", chance: 0.05, rarity: "Basura", type: "junk" },
+  { name: "Espinas", emoji: "🌿", chance: 0.04, rarity: "Basura", type: "junk" },
+  { name: "Musgo", emoji: "🌱", chance: 0.03, rarity: "Basura", type: "junk" }
+]
+
+// TROFEOS Y OBJETOS ESPECIALES
+let trophies = [
+  { name: "Pluma Rara", emoji: "🪶", chance: 0.025, rarity: "Común", type: "trophy" },
+  { name: "Cuerno Pequeño", emoji: "🦴", chance: 0.02, rarity: "Poco Común", type: "trophy" },
+  { name: "Piel de Calidad", emoji: "🟫", chance: 0.018, rarity: "Poco Común", type: "trophy" },
+  { name: "Colmillo Afilado", emoji: "🦷", chance: 0.015, rarity: "Raro", type: "trophy" },
+  { name: "Garra Poderosa", emoji: "🪝", chance: 0.012, rarity: "Raro", type: "trophy" },
+  { name: "Cuerno Dorado", emoji: "🎺", chance: 0.01, rarity: "Épico", type: "trophy" },
+  { name: "Piel Legendaria", emoji: "🥇", chance: 0.008, rarity: "Épico", type: "trophy" },
+  { name: "Corona de Bestia", emoji: "👑", chance: 0.005, rarity: "Legendario", type: "trophy" },
+  { name: "Cofre de Cazador", emoji: "📦", chance: 0.003, rarity: "Legendario", type: "trophy" },
+  { name: "Reliquia Ancestral", emoji: "⚱️", chance: 0.002, rarity: "Mítico", type: "trophy" },
+  { name: "Cofre Mítico", emoji: "🗝️", chance: 0.001, rarity: "Mítico", type: "trophy" }
+]
+
+// Combinar todos los elementos
+let allItems = [...animals, ...junkItems, ...trophies]
+
+let totalChance = 0
+let randomValue = Math.random()
+let caughtItem = null
+
+// Probabilidad de no cazar nada (18%)
+if (randomValue <= 0.18) {
+  let failMessages = [
+    "🏹 El animal escapó entre los arbustos...",
+    "🌲 Solo encontraste huellas viejas...",
+    "🦌 Los animales detectaron tu presencia...",
+    "🍃 El viento cambió y te delató...",
+    "🌪️ Una rama se rompió y los asustó...",
+    "🦅 Un pájaro alertó a toda la zona...",
+    "🐾 Solo viste sombras entre los árboles..."
+  ]
+  let randomFail = failMessages[Math.floor(Math.random() * failMessages.length)]
+  conn.reply(m.chat, `🏹 *CACERÍA FALLIDA* 😞
+
+${randomFail}
+🍀 ¡Mejor suerte la próxima vez!`, m)
+  return
+}
+
+// Ajustar el random para los elementos (sin contar el 18% de fallo)
+randomValue = (randomValue - 0.18) / 0.82
+
+for (let item of allItems) {
+  totalChance += item.chance
+  if (randomValue <= totalChance) {
+    caughtItem = item
+    break
+  }
+}
+
+if (!caughtItem) caughtItem = animals[0] // Fallback
+
+// Cantidad cazada (1-2 para animales, 1 para trofeos/basura)
+let quantity = caughtItem.type === 'animal' ? Math.floor(Math.random() * 2) + 1 : 1
+
+// Determinar inventario según tipo
+let inventory = caughtItem.type === 'animal' ? 'animals' : 
+               caughtItem.type === 'junk' ? 'huntJunk' : 'trophies'
+
+// Agregar al inventario correspondiente
+if (!users[senderId][inventory][caughtItem.name]) {
+  users[senderId][inventory][caughtItem.name] = 0
+}
+users[senderId][inventory][caughtItem.name] += quantity
+
+// Mensajes según rareza
+let rarityEmoji = {
+  "Basura": "⚫",
+  "Común": "⚪",
+  "Poco Común": "🟢", 
+  "Raro": "🔵",
+  "Épico": "🟣",
+  "Legendario": "🟡",
+  "Mítico": "🔴"
+}
+
+// Mensajes especiales según tipo
+let typeMessage = {
+  "animal": "🦌 Cazaste",
+  "junk": "🗑️ Encontraste",
+  "trophy": "🏆 ¡Obtuviste"
+}
+
+let message = `🏹 *¡CACERÍA EXITOSA!* ${caughtItem.emoji}
+
+${typeMessage[caughtItem.type]}: *${quantity}x ${caughtItem.name}*
+${rarityEmoji[caughtItem.rarity]} Rareza: *${caughtItem.rarity}*
+📦 Total en inventario: *${users[senderId][inventory][caughtItem.name]}*`
+
+// Mensaje especial para cofres
+if (caughtItem.name.includes("Cofre")) {
+  message += `\n\n🗝️ *¡Puedes abrir este cofre con ${usedPrefix}abrir!*`
+}
+
+message += `\n\n💡 Usa *${usedPrefix}inventario* para ver todo lo que tienes`
+
+conn.reply(m.chat, message, m)
+
+// Efecto especial para objetos míticos
+if (caughtItem.rarity === "Mítico") {
   setTimeout(() => {
-    conn.reply(m.chat, hsl, m);
-  }, 20000);
+    conn.reply(m.chat, `🌟 *¡CAZASTE ALGO MÍTICO!* 🌟
+✨ ¡El bosque se ilumina con una luz mística! ✨
+🎉 ¡Eres un cazador legendario!`, m)
+  }, 2000)
+}
 
-  setTimeout(() => {
-    conn.reply(m.chat, `@${m.sender.split('@s.whatsapp.net')[0]} *${['OBJETIVO FIJADO 🎯', 'Carnada en Marcha 🍫 🍇 🍖', 'ANIMALES DETECTADOS!! 🐂 🐅 🐘 🐼', 'ANIMALES DETECTADOS!! 🐖 🐃 🐮 🐒'].getRandom()}*`, null, {mentions: [m.sender]});
-  }, 18000);
+global.db.write()
+}
 
-  setTimeout(() => {
-    conn.reply(m.chat, `@${m.sender.split('@s.whatsapp.net')[0]} *${['Armas lista para la Caza!!', 'Probando Armas 🔫 💣 🪓 🏹', 'CARROS PARA LA CAZA!! 🚗 🏍️ 🚜', 'TIEMPO BUENO PARA LA CAZA 🧤'].getRandom()}*`, null, {mentions: [m.sender]});
-  }, 15000);
+handler.tags = ['economy']
+handler.help = ['cazar']
+handler.command = ['cazar', 'hunt', 'caceria']
+handler.register = true
 
-  setTimeout(() => {
-    conn.reply(m.chat, `@${m.sender.split('@s.whatsapp.net')[0]} *${['Buscando implementos de caza...', 'Alistando todo para la caza!!', 'Estableciendo Lugar de la Caza...', 'PREPARANDO LUGAR DE CAZA!!'].getRandom()}*`, m, m.mentionedJid ? {mentions: [m.sender]} : {});
-  }, 0);
-  user.lastberburu = new Date * 1;
-};
-handler.help = ['berburu'];
-handler.tags = ['rpg'];
-handler.command = ['cazar', 'hunt', 'berburu']
-handler.group = true;
-handler.register = true;
+export default handler
 
-export default handler;
-
-function clockString(ms) {
-  const h = Math.floor(ms / 3600000);
-  const m = Math.floor(ms / 60000) % 60;
-  const s = Math.floor(ms / 1000) % 60;
-  console.log({ms, h, m, s});
-  return [h, m, s].map((v) => v.toString().padStart(2, 0) ).join(':');
+function segundosAHMS(segundos) {
+let horas = Math.floor(segundos / 3600)
+let minutos = Math.floor((segundos % 3600) / 60)
+let segundosRestantes = segundos % 60
+return `${minutos} minutos y ${segundosRestantes} segundos`
 }
 
