@@ -12,7 +12,11 @@ let handler = async (m, { conn }) => {
     if (!libre) return m.reply('No hay islas libres disponibles.')
     islands[libre].owner = myClan
     global.db.data.islands = islands
-    m.reply(`¡La isla ${libre} ahora pertenece al clan ${myClan}!`)
+    m.reply(
+        `¡La isla ${libre} ahora pertenece al clan ${myClan}!\n` +
+        `Minerales disponibles:\n` +
+        `Hierro: ${islands[libre].iron} | Oro: ${islands[libre].gold} | Esmeralda: ${islands[libre].emerald} | Carbón: ${islands[libre].coal} | Piedra: ${islands[libre].stone}`
+    )
 }
 handler.tags = ['isla']
 handler.help = ['islacomprar']
