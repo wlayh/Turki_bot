@@ -10,12 +10,12 @@ if (!users[senderId].animals) users[senderId].animals = {}
 if (!users[senderId].trophies) users[senderId].trophies = {}
 if (!users[senderId].huntJunk) users[senderId].huntJunk = {}
 
-let tiempo = 5 * 60 // 5 minutos
+let tiempo = 3 * 60 // 3 minutos (reducido para más fluidez)
 if (cooldowns[m.sender] && Date.now() - cooldowns[m.sender] < tiempo * 1000) {
   let tiempo2 = segundosAHMS(Math.ceil((cooldowns[m.sender] + tiempo * 1000 - Date.now()) / 1000))
-  m.reply(`🏹 *¡RIFLE EN DESCANSO!* 🏹
+  m.reply(`🏹 *¡DESCANSANDO DE LA CAZA!* 🏹
 🕒 Espera *${tiempo2}* para cazar de nuevo
-🌲 Los animales se escondieron 🦌`)
+🌲 Los animales están alerta 🦌`)
   return
 }
 
@@ -69,8 +69,8 @@ let totalChance = 0
 let randomValue = Math.random()
 let caughtItem = null
 
-// Probabilidad de no cazar nada (18%)
-if (randomValue <= 0.18) {
+// Probabilidad de no cazar nada (15% - reducido para ser más generoso)
+if (randomValue <= 0.15) {
   let failMessages = [
     "🏹 El animal escapó entre los arbustos...",
     "🌲 Solo encontraste huellas viejas...",
@@ -84,12 +84,13 @@ if (randomValue <= 0.18) {
   conn.reply(m.chat, `🏹 *CACERÍA FALLIDA* 😞
 
 ${randomFail}
-🍀 ¡Mejor suerte la próxima vez!`, m)
+🍀 ¡Mejor suerte la próxima vez!
+💡 Usa *${usedPrefix}vendercaza* para vender lo que tienes`, m)
   return
 }
 
-// Ajustar el random para los elementos (sin contar el 18% de fallo)
-randomValue = (randomValue - 0.18) / 0.82
+// Ajustar el random para los elementos (sin contar el 15% de fallo)
+randomValue = (randomValue - 0.15) / 0.85
 
 for (let item of allItems) {
   totalChance += item.chance
@@ -101,8 +102,17 @@ for (let item of allItems) {
 
 if (!caughtItem) caughtItem = animals[0] // Fallback
 
-// Cantidad cazada (1-2 para animales, 1 para trofeos/basura)
-let quantity = caughtItem.type === 'animal' ? Math.floor(Math.random() * 2) + 1 : 1
+// Cantidad cazada (1-3 para animales comunes, 1-2 para raros, 1 para trofeos/basura)
+let quantity = 1
+if (caughtItem.type === 'animal') {
+  if (caughtItem.rarity === 'Común') {
+    quantity = Math.floor(Math.random() * 3) + 1 // 1-3
+  } else if (caughtItem.rarity === 'Poco Común') {
+    quantity = Math.floor(Math.random() * 2) + 1 // 1-2
+  } else {
+    quantity = 1 // Animales raros: solo 1
+  }
+}
 
 // Determinar inventario según tipo
 let inventory = caughtItem.type === 'animal' ? 'animals' : 
@@ -127,7 +137,7 @@ let rarityEmoji = {
 
 // Mensajes especiales según tipo
 let typeMessage = {
-  "animal": "🦌 Cazaste",
+  "animal": "🦌 ¡Cazaste",
   "junk": "🗑️ Encontraste",
   "trophy": "🏆 ¡Obtuviste"
 }
@@ -143,7 +153,8 @@ if (caughtItem.name.includes("Cofre")) {
   message += `\n\n🗝️ *¡Puedes abrir este cofre con ${usedPrefix}abrir!*`
 }
 
-message += `\n\n💡 Usa *${usedPrefix}inventario* para ver todo lo que tienes`
+message += `\n\n💰 Usa *${usedPrefix}vendercaza* para vender tus capturas
+📊 Usa *${usedPrefix}valorarcaza* para ver el valor de tu inventario`
 
 conn.reply(m.chat, message, m)
 
@@ -152,8 +163,18 @@ if (caughtItem.rarity === "Mítico") {
   setTimeout(() => {
     conn.reply(m.chat, `🌟 *¡CAZASTE ALGO MÍTICO!* 🌟
 ✨ ¡El bosque se ilumina con una luz mística! ✨
-🎉 ¡Eres un cazador legendario!`, m)
+🎉 ¡Eres un cazador legendario!
+👑 ¡Este objeto vale una fortuna!`, m)
   }, 2000)
+}
+
+// Mensaje motivacional para animales legendarios
+if (caughtItem.rarity === "Legendario") {
+  setTimeout(() => {
+    conn.reply(m.chat, `⭐ *¡CAPTURA LEGENDARIA!* ⭐
+🏆 ¡Has cazado algo muy valioso!
+💰 ¡Esto te dará muchas monedas!`, m)
+  }, 1500)
 }
 
 global.db.write()
@@ -172,4 +193,7 @@ let minutos = Math.floor((segundos % 3600) / 60)
 let segundosRestantes = segundos % 60
 return `${minutos} minutos y ${segundosRestantes} segundos`
 }
+
+
+
 
