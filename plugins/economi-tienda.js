@@ -42,9 +42,11 @@ let handler = async (m, { conn, args, command }) => {
 
     // Si no hay argumentos, mostrar la tienda
     if (!args[0]) {
-        let tiendaInfo = `🏪 **TIENDA MÍSTICA** 🏪\n\n` +
-            `💰 *Tu ${moneda}*: ${user.coin || 0}\n\n` +
-            `📦 **TUS RECURSOS:**\n` +
+        let img = 'https://raw.githubusercontent.com/The-King-Destroy/Adiciones/main/Contenido/tienda.jpeg';
+        
+        let tiendaInfo = `🏪 *TIENDA MÍSTICA* 🏪\n\n` +
+            `💰 *Tu dinero*: ${user.coin || 0} monedas\n\n` +
+            `📦 *TUS RECURSOS:*\n` +
             `┏━━━━━━━━━━━━━┓\n` +
             `┃ 💎 Esmeralda: ${user.emerald || 0}\n` +
             `┃ 🔩 Hierro: ${user.iron || 0}\n` +
@@ -52,24 +54,26 @@ let handler = async (m, { conn, args, command }) => {
             `┃ ⚫ Carbón: ${user.coal || 0}\n` +
             `┃ 🪨 Piedra: ${user.stone || 0}\n` +
             `┗━━━━━━━━━━━━━┛\n\n` +
-            `💸 **PRECIOS DE VENTA:**\n` +
-            `• 💎 Esmeralda: ${sellPrices.esmeralda} ${moneda}\n` +
-            `• 🔩 Hierro: ${sellPrices.hierro} ${moneda}\n` +
-            `• 🥇 Oro: ${sellPrices.oro} ${moneda}\n` +
-            `• ⚫ Carbón: ${sellPrices.carbon} ${moneda}\n` +
-            `• 🪨 Piedra: ${sellPrices.piedra} ${moneda}\n\n` +
-            `💰 **PRECIOS DE COMPRA:**\n` +
-            `• 💎 Esmeralda: ${buyPrices.esmeralda} ${moneda}\n` +
-            `• 🔩 Hierro: ${buyPrices.hierro} ${moneda}\n` +
-            `• 🥇 Oro: ${buyPrices.oro} ${moneda}\n` +
-            `• ⚫ Carbón: ${buyPrices.carbon} ${moneda}\n` +
-            `• 🪨 Piedra: ${buyPrices.piedra} ${moneda}\n\n` +
-            `📝 **COMANDOS:**\n` +
-            `• *${usedPrefix}tienda vender [objeto] [cantidad]*\n` +
-            `• *${usedPrefix}tienda comprar [objeto] [cantidad]*\n\n` +
-            `**Ejemplo:** *${usedPrefix}tienda vender hierro 10*`;
+            `💸 *PRECIOS DE VENTA:*\n` +
+            `• 💎 Esmeralda: ${sellPrices.esmeralda} monedas\n` +
+            `• 🔩 Hierro: ${sellPrices.hierro} monedas\n` +
+            `• 🥇 Oro: ${sellPrices.oro} monedas\n` +
+            `• ⚫ Carbón: ${sellPrices.carbon} monedas\n` +
+            `• 🪨 Piedra: ${sellPrices.piedra} monedas\n\n` +
+            `💰 *PRECIOS DE COMPRA:*\n` +
+            `• 💎 Esmeralda: ${buyPrices.esmeralda} monedas\n` +
+            `• 🔩 Hierro: ${buyPrices.hierro} monedas\n` +
+            `• 🥇 Oro: ${buyPrices.oro} monedas\n` +
+            `• ⚫ Carbón: ${buyPrices.carbon} monedas\n` +
+            `• 🪨 Piedra: ${buyPrices.piedra} monedas\n\n` +
+            `📝 *COMANDOS:*\n` +
+            `• .tienda vender [objeto] [cantidad]\n` +
+            `• .tienda comprar [objeto] [cantidad]\n\n` +
+            `*Ejemplo:* .tienda vender hierro 10`;
 
-        return conn.sendMessage(m.chat, { text: tiendaInfo }, { quoted: fkontak });
+        await conn.sendFile(m.chat, img, 'tienda.jpg', tiendaInfo, m);
+        await m.react('🏪');
+        return;
     }
 
     let action = args[0].toLowerCase();
@@ -108,13 +112,13 @@ let handler = async (m, { conn, args, command }) => {
         user[realItem] -= cantidad;
         user.coin = (user.coin || 0) + totalGain;
 
-        let sellMsg = `✅ **VENTA EXITOSA** ✅\n\n` +
+        let sellMsg = `✅ *VENTA EXITOSA* ✅\n\n` +
             `📦 *Vendiste:* ${cantidad}x ${itemNames[realItem]}\n` +
-            `💰 *Ganaste:* ${totalGain} ${moneda}\n` +
-            `💸 *${moneda} total:* ${user.coin}\n` +
+            `💰 *Ganaste:* ${totalGain} monedas\n` +
+            `💸 *Dinero total:* ${user.coin} monedas\n` +
             `📦 *${itemNames[realItem]} restante:* ${user[realItem]}`;
 
-        await conn.sendMessage(m.chat, { text: sellMsg }, { quoted: fkontak });
+        await conn.sendMessage(m.chat, { text: sellMsg }, { quoted: m });
         await m.react('💰');
     }
 
@@ -131,13 +135,13 @@ let handler = async (m, { conn, args, command }) => {
         user.coin -= totalCost;
         user[realItem] = (user[realItem] || 0) + cantidad;
 
-        let buyMsg = `✅ **COMPRA EXITOSA** ✅\n\n` +
+        let buyMsg = `✅ *COMPRA EXITOSA* ✅\n\n` +
             `🛒 *Compraste:* ${cantidad}x ${itemNames[realItem]}\n` +
-            `💸 *Gastaste:* ${totalCost} ${moneda}\n` +
-            `💰 *${moneda} restante:* ${user.coin}\n` +
+            `💸 *Gastaste:* ${totalCost} monedas\n` +
+            `💰 *Dinero restante:* ${user.coin} monedas\n` +
             `📦 *${itemNames[realItem]} total:* ${user[realItem]}`;
 
-        await conn.sendMessage(m.chat, { text: buyMsg }, { quoted: fkontak });
+        await conn.sendMessage(m.chat, { text: buyMsg }, { quoted: m });
         await m.react('🛒');
     }
 }
