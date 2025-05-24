@@ -15,13 +15,29 @@ let handler = async (m, { conn, args }) => {
     let name = conn.getName(userId);
     let cumpleanos = user.birth || 'No especificado';
     let genero = user.genre || 'No especificado';
-    let pareja = user.marry || 'Nadie';
     let description = user.description || 'Sin Descripción';
     let exp = user.exp || 0;
     let nivel = user.level || 0;
     let role = user.role || 'Sin Rango';
     let coins = user.coin || 0;
     let bankCoins = user.bank || 0;
+    
+    // Verificar estado de matrimonio desde la base de datos de matrimonios
+    let marriageInfo = null;
+    let partnerName = 'Nadie';
+    let marriageDate = null;
+    
+    if (global.db.data.marriages) {
+        marriageInfo = Object.values(global.db.data.marriages).find(marriage => 
+            marriage.spouse1 === userId || marriage.spouse2 === userId
+        );
+        
+        if (marriageInfo) {
+            let partnerId = marriageInfo.spouse1 === userId ? marriageInfo.spouse2 : marriageInfo.spouse1;
+            partnerName = conn.getName(partnerId);
+            marriageDate = marriageInfo.marriageDate;
+        }
+    }
     
     // Obtener la fecha actual
     const now = moment();
@@ -47,8 +63,19 @@ let handler = async (m, { conn, args }) => {
     // Emojis para rangos
     let roleEmoji = '👤';
     if (role.toLowerCase().includes('admin')) roleEmoji = '👑';
-    else if (role.toLowerCase().includes('mod')) roleEmoji = '🛡️';
+    else if (role.toLowerCase().includes('mod')) roleEmoji = '�shield️';
     else if (role.toLowerCase().includes('vip')) roleEmoji = '💎';
+
+    // Estado civil mejorado
+    let maritalStatus;
+    if (marriageInfo) {
+        maritalStatus = `💍 Casado/a con ${partnerName}`;
+        if (marriageDate) {
+            maritalStatus += `\n*┃* *💕 Fecha de matrimonio:* ${marriageDate}`;
+        }
+    } else {
+        maritalStatus = '💔 Soltero/a';
+    }
 
     let profileText = `
 *╭━━━━❰ 🌟 PERFIL DE USUARIO 🌟 ❱━━━━╮*
@@ -63,7 +90,7 @@ let handler = async (m, { conn, args }) => {
 *┃* *🎂 Edad:* ${user.age || 'Desconocida'}
 *┃* *🎊 Cumpleaños:* ${cumpleanos}
 *┃* *${genderEmoji} Género:* ${genero}
-*┃* *💘 Estado Civil:* ${pareja !== 'Nadie' ? `💍 Casado con ${pareja}` : '💔 Soltero'}
+*┃* *💘 Estado Civil:* ${maritalStatus}
 *┃* *⏱️ Registrado hace:* ${timeDiff} días
 *┃* *⌚ Última actividad:* ${lastSeen}
 *┃*
@@ -89,6 +116,7 @@ let handler = async (m, { conn, args }) => {
 
 *🔮 Usa el comando /editar para personalizar tu perfil* 
 *💫 Gana más experiencia interactuando en el grupo*
+${marriageInfo ? '' : '*💘 Usa /marry para encontrar el amor*'}
   `.trim();
 
     await conn.sendMessage(m.chat, { 
