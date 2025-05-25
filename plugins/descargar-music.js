@@ -7,7 +7,7 @@ const TIMEOUT = 15000 // 15 segundos de timeout
 
 const handler = async (m, { conn, text, usedPrefix, command }) => {
   if (!text.trim()) {
-    return conn.reply(m.chat, `🎵 *Ingresa el nombre de la música o video que deseas descargar*\n\n📝 *Ejemplos:*\n• ${usedPrefix}play bad bunny tití me preguntó\n• ${usedPrefix}video ozuna baila baila\n• ${usedPrefix}music rosalía despechá`, m)
+    return conn.reply(m.chat, `🎵 *Ingresa el nombre de la música o video que deseas descargar*\n\n📝 *Ejemplos:*\n• ${usedPrefix}dl bad bunny tití me preguntó\n• ${usedPrefix}dv ozuna baila baila\n• ${usedPrefix}da rosalía despechá`, m)
   }
 
   let loadingMsg
@@ -73,8 +73,8 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
     await conn.reply(m.chat, infoMessage, m, contextInfo)
 
     // Determinar tipo de descarga
-    const isAudio = ['play', 'music'].includes(command)
-    const isVideo = ['video'].includes(command)
+    const isAudio = ['dl', 'da', 'sx'].includes(command)
+    const isVideo = ['dv', 'vx'].includes(command)
 
     if (isAudio) {
       await downloadAudio(conn, m, url, title, thumb)
@@ -292,7 +292,7 @@ function formatViews(views) {
 }
 
 // Configuración del handler
-handler.command = handler.help = ['play', 'music', 'video']
+handler.command = handler.help = ['dl', 'da', 'sx', 'dv', 'vx']
 handler.tags = ['downloader']
 handler.group = true
 handler.register = true
