@@ -107,7 +107,8 @@ let handler = async (m, { conn, args, command }) => {
             lastMission: 0,
             inCombat: false,
             enemy: null,
-            selectedMission: null
+            selectedMission: null,
+            selectingClass: false // Nueva variable para controlar el estado
         }
     }
 
@@ -118,6 +119,9 @@ let handler = async (m, { conn, args, command }) => {
             if (user.rpg.class) {
                 return conn.reply(m.chat, `${classes[user.rpg.class].emoji} Ya has comenzado tu aventura como ${classes[user.rpg.class].name}. Usa *!mision* para continuar.`, m);
             }
+
+            // Marcar que el usuario está seleccionando clase
+            user.rpg.selectingClass = true;
 
             let classSelection = `🏰 *¡Bienvenido a Reinos de Sombras!* 🏰\n\n` +
                 `✨ *Elige tu clase de aventurero:* ✨\n\n` +
@@ -131,34 +135,6 @@ let handler = async (m, { conn, args, command }) => {
 
             await conn.sendFile(m.chat, img, 'rpg.jpg', classSelection, fkontak);
             await m.react('🏰');
-            break;
-
-        case '1':
-        case '2':
-        case '3':
-            if (user.rpg.class) {
-                return conn.reply(m.chat, '❌ Ya tienes una clase seleccionada.', m);
-            }
-
-            let selectedClass = classes[parseInt(command)];
-            user.rpg.class = parseInt(command);
-            user.rpg.maxHealth = selectedClass.health;
-            user.rpg.currentHealth = selectedClass.health;
-            user.rpg.damage = selectedClass.damage;
-            user.rpg.defense = selectedClass.defense;
-
-            let welcome = `⚡ *¡Clase seleccionada!* ⚡\n\n` +
-                `${selectedClass.emoji} *Ahora eres un ${selectedClass.name}*\n\n` +
-                `📊 *Tus estadísticas:*\n` +
-                `❤️ Vida: ${selectedClass.health}/${selectedClass.health}\n` +
-                `⚔️ Daño: ${selectedClass.damage}\n` +
-                `🛡️ Defensa: ${selectedClass.defense}\n` +
-                `💰 Monedas: ${user.rpg.coins}\n\n` +
-                `🗡️ *¡Tu aventura comienza ahora!*\n` +
-                `Usa *!mision* para emprender tu primera misión`;
-
-            await conn.reply(m.chat, welcome, m);
-            await m.react('⚡');
             break;
 
         case 'menumision':
@@ -196,53 +172,10 @@ let handler = async (m, { conn, args, command }) => {
             await conn.sendFile(m.chat, img, 'missions.jpg', missionMenu, fkontak);
             await m.react('🗺️');
             break;
+
         case 'mision':
             // Redirigir al menú de misiones
             return handler(m, { conn, args, command: 'menumision' });
-
-        case '4':
-        case '5':
-        case '6':
-            // Manejar selección de misiones (agregamos casos 4, 5, 6 para las nuevas misiones)
-            if (!user.rpg.inCombat && user.rpg.class && ['1', '2', '3', '4', '5', '6'].includes(command)) {
-                let missionId = parseInt(command);
-                let selectedMission = missions.find(m => m.id === missionId);
-                
-                if (!selectedMission) {
-                    return conn.reply(m.chat, '❌ Misión no válida. Usa *!menumision* para ver las opciones.', m);
-                }
-
-                if (user.rpg.currentHealth <= 0) {
-                    return conn.reply(m.chat, '💀 Estás muerto. Espera un momento para que tu salud se regenere automáticamente.', m);
-                }
-
-                let time = user.rpg.lastMission + 300000; // 5 minutos de cooldown
-                if (new Date() - user.rpg.lastMission < 300000) {
-                    return conn.reply(m.chat, `⏰ Debes esperar ${msToTime(time - new Date())} para tu próxima misión.`, m);
-                }
-
-                // Seleccionar enemigo aleatorio de la misión
-                let enemy = selectedMission.enemies[Math.floor(Math.random() * selectedMission.enemies.length)];
-                user.rpg.enemy = { ...enemy };
-                user.rpg.selectedMission = selectedMission;
-                user.rpg.inCombat = true;
-
-                let combatMsg = `⚔️ *¡MISIÓN INICIADA!* ${selectedMission.emoji}\n\n` +
-                    `🗺️ *Misión:* ${selectedMission.name}\n` +
-                    `📜 *${selectedMission.description}*\n\n` +
-                    `${enemy.emoji} *Te has encontrado con un ${enemy.name}*\n\n` +
-                    `🩸 *Vida del enemigo:* ${enemy.health}\n` +
-                    `⚔️ *Daño del enemigo:* ${enemy.damage}\n\n` +
-                    `🎯 *¿Qué deseas hacer?*\n\n` +
-                    `1️⃣ ${combatActions[0].emoji} ${combatActions[0].name}\n` +
-                    `2️⃣ ${combatActions[1].emoji} ${combatActions[1].name}\n` +
-                    `3️⃣ ${combatActions[2].emoji} ${combatActions[2].name}\n\n` +
-                    `💡 *Escribe el número de tu acción*`;
-
-                await conn.sendFile(m.chat, img, 'combat.jpg', combatMsg, fkontak);
-                await m.react('⚔️');
-                break;
-            }
 
         case 'estado':
             if (!user.rpg.class) {
@@ -273,9 +206,36 @@ let handler = async (m, { conn, args, command }) => {
             // Redirigir al menú de misiones
             return handler(m, { conn, args, command: 'menumision' });
 
-        default:
-            // Manejar acciones de combate
-            if (user.rpg.inCombat && ['1', '2', '3'].includes(command)) {
+        case '1':
+        case '2':
+        case '3':
+            // SELECCIÓN DE CLASE
+            if (user.rpg.selectingClass && !user.rpg.class) {
+                let selectedClass = classes[parseInt(command)];
+                user.rpg.class = parseInt(command);
+                user.rpg.maxHealth = selectedClass.health;
+                user.rpg.currentHealth = selectedClass.health;
+                user.rpg.damage = selectedClass.damage;
+                user.rpg.defense = selectedClass.defense;
+                user.rpg.selectingClass = false; // Ya no está seleccionando clase
+
+                let welcome = `⚡ *¡Clase seleccionada!* ⚡\n\n` +
+                    `${selectedClass.emoji} *Ahora eres un ${selectedClass.name}*\n\n` +
+                    `📊 *Tus estadísticas:*\n` +
+                    `❤️ Vida: ${selectedClass.health}/${selectedClass.health}\n` +
+                    `⚔️ Daño: ${selectedClass.damage}\n` +
+                    `🛡️ Defensa: ${selectedClass.defense}\n` +
+                    `💰 Monedas: ${user.rpg.coins}\n\n` +
+                    `🗡️ *¡Tu aventura comienza ahora!*\n` +
+                    `Usa *!mision* para emprender tu primera misión`;
+
+                await conn.reply(m.chat, welcome, m);
+                await m.react('⚡');
+                break;
+            }
+
+            // ACCIONES DE COMBATE
+            if (user.rpg.inCombat && user.rpg.class) {
                 let actionIndex = parseInt(command) - 1;
                 let action = combatActions[actionIndex];
                 let enemy = user.rpg.enemy;
@@ -388,7 +348,93 @@ let handler = async (m, { conn, args, command }) => {
                 }
 
                 await conn.reply(m.chat, battleResult, m);
+                break;
             }
+
+            // SELECCIÓN DE MISIONES (solo misiones 1, 2, 3)
+            if (!user.rpg.inCombat && user.rpg.class && !user.rpg.selectingClass) {
+                let missionId = parseInt(command);
+                let selectedMission = missions.find(m => m.id === missionId);
+                
+                if (!selectedMission) {
+                    return conn.reply(m.chat, '❌ Misión no válida. Usa *!menumision* para ver las opciones.', m);
+                }
+
+                if (user.rpg.currentHealth <= 0) {
+                    return conn.reply(m.chat, '💀 Estás muerto. Espera un momento para que tu salud se regenere automáticamente.', m);
+                }
+
+                let time = user.rpg.lastMission + 300000; // 5 minutos de cooldown
+                if (new Date() - user.rpg.lastMission < 300000) {
+                    return conn.reply(m.chat, `⏰ Debes esperar ${msToTime(time - new Date())} para tu próxima misión.`, m);
+                }
+
+                // Seleccionar enemigo aleatorio de la misión
+                let enemy = selectedMission.enemies[Math.floor(Math.random() * selectedMission.enemies.length)];
+                user.rpg.enemy = { ...enemy };
+                user.rpg.selectedMission = selectedMission;
+                user.rpg.inCombat = true;
+
+                let combatMsg = `⚔️ *¡MISIÓN INICIADA!* ${selectedMission.emoji}\n\n` +
+                    `🗺️ *Misión:* ${selectedMission.name}\n` +
+                    `📜 *${selectedMission.description}*\n\n` +
+                    `${enemy.emoji} *Te has encontrado con un ${enemy.name}*\n\n` +
+                    `🩸 *Vida del enemigo:* ${enemy.health}\n` +
+                    `⚔️ *Daño del enemigo:* ${enemy.damage}\n\n` +
+                    `🎯 *¿Qué deseas hacer?*\n\n` +
+                    `1️⃣ ${combatActions[0].emoji} ${combatActions[0].name}\n` +
+                    `2️⃣ ${combatActions[1].emoji} ${combatActions[1].name}\n` +
+                    `3️⃣ ${combatActions[2].emoji} ${combatActions[2].name}\n\n` +
+                    `💡 *Escribe el número de tu acción*`;
+
+                await conn.sendFile(m.chat, img, 'combat.jpg', combatMsg, fkontak);
+                await m.react('⚔️');
+            }
+            break;
+
+        case '4':
+        case '5':
+        case '6':
+            // SELECCIÓN DE MISIONES 4, 5, 6
+            if (!user.rpg.inCombat && user.rpg.class && !user.rpg.selectingClass) {
+                let missionId = parseInt(command);
+                let selectedMission = missions.find(m => m.id === missionId);
+                
+                if (!selectedMission) {
+                    return conn.reply(m.chat, '❌ Misión no válida. Usa *!menumision* para ver las opciones.', m);
+                }
+
+                if (user.rpg.currentHealth <= 0) {
+                    return conn.reply(m.chat, '💀 Estás muerto. Espera un momento para que tu salud se regenere automáticamente.', m);
+                }
+
+                let time = user.rpg.lastMission + 300000; // 5 minutos de cooldown
+                if (new Date() - user.rpg.lastMission < 300000) {
+                    return conn.reply(m.chat, `⏰ Debes esperar ${msToTime(time - new Date())} para tu próxima misión.`, m);
+                }
+
+                // Seleccionar enemigo aleatorio de la misión
+                let enemy = selectedMission.enemies[Math.floor(Math.random() * selectedMission.enemies.length)];
+                user.rpg.enemy = { ...enemy };
+                user.rpg.selectedMission = selectedMission;
+                user.rpg.inCombat = true;
+
+                let combatMsg = `⚔️ *¡MISIÓN INICIADA!* ${selectedMission.emoji}\n\n` +
+                    `🗺️ *Misión:* ${selectedMission.name}\n` +
+                    `📜 *${selectedMission.description}*\n\n` +
+                    `${enemy.emoji} *Te has encontrado con un ${enemy.name}*\n\n` +
+                    `🩸 *Vida del enemigo:* ${enemy.health}\n` +
+                    `⚔️ *Daño del enemigo:* ${enemy.damage}\n\n` +
+                    `🎯 *¿Qué deseas hacer?*\n\n` +
+                    `1️⃣ ${combatActions[0].emoji} ${combatActions[0].name}\n` +
+                    `2️⃣ ${combatActions[1].emoji} ${combatActions[1].name}\n` +
+                    `3️⃣ ${combatActions[2].emoji} ${combatActions[2].name}\n\n` +
+                    `💡 *Escribe el número de tu acción*`;
+
+                await conn.sendFile(m.chat, img, 'combat.jpg', combatMsg, fkontak);
+                await m.react('⚔️');
+            }
+            break;
     }
 }
 
