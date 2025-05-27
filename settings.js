@@ -16,15 +16,15 @@ global.botNumber = '' //Ejemplo: 573218138672
 //*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
 
 global.owner = [
-  ['524181450063', ' 𝕱𝖊𝖗𝖓𝖆𝖓𝖉𝖔 Creador 🜲', true],
-  ['527461177130',  'ASTA_BOT', true]
-  ['5216631079388', ' neykor 🜲', true],
+  ['966507384387', ' المبرمج', true],
+  ['966508827718',  'TURKI_BOT', true]
+  ['966507384387', ' المطور', true],
 ];
 
 //*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
 
 global.mods = []
-global.suittag = ['524181450063'] 
+global.suittag = ['966507384387'] 
 global.prems = []
 
 //*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
@@ -32,21 +32,21 @@ global.prems = []
 global.libreria = 'Baileys'
 global.baileys = 'V 6.7.16' 
 global.vs = '2.2.0'
-global.nameqr = '『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』'
-global.namebot = '『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』'
+global.nameqr = '『بوت تركي』'
+global.namebot = '『بوت تركي』'
 global.sessions = 'Sessions'
 global.jadi = 'JadiBots' 
 global.yukiJadibts = true
 
 //*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
 
-global.packname = '『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』'
-global.botname = '『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』'
-global.wm = '『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』'
-global.author = '𝕱𝖊𝖗𝖓𝖆𝖓𝖉𝖔'
-global.dev = '𝕱𝖊𝖗𝖓𝖆𝖓𝖉𝖔'
-global.textbot = '『𝕬𝖘𝖙𝖆-𝕭𝖔𝖙』 • Powered By 𝕱𝖊𝖗𝖓𝖆𝖓𝖉𝖔'
-global.etiqueta = '𝕱𝖊𝖗𝖓𝖆𝖓𝖉𝖔'
+global.packname = '『بوت تركي』'
+global.botname = '『بوت تركي』'
+global.wm = '『بوت تركي』'
+global.author = 'تركي'
+global.dev = 'تركي'
+global.textbot = '『بوت تركي』 • Powered By تركي'
+global.etiqueta = 'تركي'
 
 //*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
 
@@ -62,8 +62,8 @@ global.gp1 = 'https://chat.whatsapp.com/BWwvJ4h5lzuLhIuXsBK0Wh'
 global.comunidad1 = 'https://chat.whatsapp.com/JONU3lLJhCf0JgCuL13gwk'
 global.channel = 'https://whatsapp.com/channel/0029VbAoYE99hXF1wm3zmQ21'
 global.channel2 = 'https://whatsapp.com/channel/0029VbAoYE99hXF1wm3zmQ21'
-global.md = 'https://github.com/Fer280809/Asta_bot'
-global.correo = 'fer280809fl@gmail.com'
+global.md = 'https://github.com/wlayh/TURKI_bot'
+global.correo = 'wlayhfl@gmail.com'
 global.cn ='https://whatsapp.com/channel/0029VbAoYE99hXF1wm3zmQ21';
 
 //*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
