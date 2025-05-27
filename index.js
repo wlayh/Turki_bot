@@ -41,9 +41,9 @@ const PORT = process.env.PORT || process.env.SERVER_PORT || 3000
 //let require = createRequire(megu)
 let { say } = cfonts
 
-console.log(chalk.bold.redBright(`\n✰ Iniciando Asta_bot ✰\n`))
+console.log(chalk.bold.redBright(`\n✰ Iniciando TURKI_bot ✰\n`))
 
-say('Asta-Bot', {
+say('TURKI-Bot', {
 font: 'block',
 align: 'center',
 colors: ['magentaBright']
@@ -212,7 +212,7 @@ if (opcion == '1' || methodCodeQR) {
 console.log(chalk.bold.yellow(`\n❐ ESCANEA EL CÓDIGO QR EXPIRA EN 45 SEGUNDOS`))}
 }
 if (connection == 'open') {
-console.log(chalk.bold.green('\n❀ Asta_bot Conectado con éxito ❀'))
+console.log(chalk.bold.green('\n❀ TURKI_bot Conectado con éxito ❀'))
 }
 let reason = new Boom(lastDisconnect?.error)?.output?.statusCode
 if (connection === 'close') {
