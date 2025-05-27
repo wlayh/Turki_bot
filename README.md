@@ -107,7 +107,7 @@ apt update && apt upgrade && pkg install -y git nodejs ffmpeg imagemagick yarn
 ```
 
 ```bash
-git clone https://github.com/Fer280809/Asta_bot && cd Asta_bot
+git clone https://github.com/wlayh/Turki_bot && cd Turki_bot
 ```
 
 ```bash
@@ -134,7 +134,7 @@ npm start
 ❒ Abre Termux y navega al directorio del bot:
    
    ```bash
-    cd Asta_bot
+    cd Turki_bot
    ```
 
 ❒ Inicia el bot nuevamente:
@@ -148,7 +148,7 @@ npm start
 > Si después de instalar el bot en Termux y iniciar la sesión del bot deseas poner tu número en la lista de owner, usa este comando:
 
    ```bash
-    cd Asta_bot && nano settings.js
+    cd Turki_bot && nano settings.js
    ```
 
 </details>
